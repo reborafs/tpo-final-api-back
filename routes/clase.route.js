@@ -12,7 +12,8 @@ const { claseGet,
         claseCreate,
         claseUpdate,
         claseDelete,
-        misClaseGet } = require('../controllers/clase.controllers');
+        misClaseGet,
+        claseContratadaGet } = require('../controllers/clase.controllers');
 
 
 
