@@ -6,9 +6,10 @@ const ClaseSchema = Schema({
         type: String,
         required: [true, 'El nombre de la clase es obligatorio']
     },
-    profesorName: {
-        type: String,
-        required: [true, 'El nombre del profesor es obligatorio']
+    profesorId: {
+        type: Schema.Types.ObjectId,
+        required: [true, 'El id del profesor es obligatorio'],
+        ref: 'User'
     },
     statusClase: {
         type: Boolean,
@@ -31,10 +32,10 @@ const ClaseSchema = Schema({
         type: String,
         required: [true, "La url de la imagen es obligatorio"]
     },
-    commentId: {
-        type: Object,
-        default: []
-    }
+    commentId: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comentario'
+    }]
 })
 
 ClaseSchema.methods.toJSON = function() {

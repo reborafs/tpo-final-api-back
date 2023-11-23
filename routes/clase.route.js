@@ -4,13 +4,15 @@ const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
 const { isClaseValid,
         existsClaseById,
-        existsClaseByStatus } = require('../helpers/db-validators');
+        existsClaseByStatus,
+        existsUserById } = require('../helpers/db-validators');
 
 const { claseGet,
         listaClaseGet,
         claseCreate,
         claseUpdate,
-        claseDelete } = require('../controllers/clase.controllers');
+        claseDelete,
+        misClaseGet } = require('../controllers/clase.controllers');
 
 
 
@@ -27,7 +29,7 @@ router.get('/catalogo', listaClaseGet);
 
 router.post('/crear-clase', [
     check('title', 'El nombre es obligatorio').not().isEmpty(),
-    check('profesorName', 'El nombre es obligatorio').not().isEmpty(),
+    check('profesorId', 'No es un ID válido').isMongoId(),
     check('category', 'El nombre es obligatorio').not().isEmpty(),
     check('description', 'El nombre es obligatorio').not().isEmpty(),
     check('price', 'El nombre es obligatorio').not().isEmpty(),
@@ -40,7 +42,6 @@ router.put('/actualizar-clase/:id', [
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existsClaseById ),
     check('title', 'El nombre es obligatorio').not().isEmpty(),
-    check('profesorName', 'El nombre es obligatorio').not().isEmpty(),
     check('category', 'El nombre es obligatorio').not().isEmpty(),
     check('description', 'El nombre es obligatorio').not().isEmpty(),
     check('price', 'El nombre es obligatorio').not().isEmpty(),
@@ -54,5 +55,11 @@ router.delete('/borrar-clase/:id', [
     check('id').custom( existsClaseById ),
     validateFields
 ] , claseDelete);
+
+router.get('/mis-clases/:id',  [
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( existsUserById ),
+    validateFields
+] , misClaseGet);
 
 module.exports = router;
