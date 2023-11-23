@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 
+const ClaseContratada = require('../models/claseContrtada.model');
 const Clase = require('../models/clase.model');
 const User = require('../models/User.model');
 const Comentario = require('../models/comentario.model');
@@ -142,11 +143,8 @@ const comentarioUpdate = async (coment) => {
 const misClaseGet = async (req, res = response) => {
     
     const { id } = req.params;
-
-
     const query = { profesorId: id }
     const { limit = 100, from = 0 } = req.query;
-
 
     const [total, clases] = await Promise.all([
         Clase.countDocuments(query),

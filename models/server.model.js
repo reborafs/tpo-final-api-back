@@ -9,7 +9,9 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.claseRoutePath = '/api/clase';
+        this.claseContratadaRoutePath = '/api/clase-contratada';
         this.userRoutePath = '/api/users';
+        
 
         //Conectar a base de datos
         this.conectDB();
@@ -39,6 +41,7 @@ class Server {
 
     routes() {
         this.app.use(this.claseRoutePath, require('../routes/clase.route'));
+        this.app.use(this.claseContratadaRoutePath, require('../routes/claseContratada.route'));
         this.app.use(this.userRoutePath, require('../routes/user.route'));
     }
 
