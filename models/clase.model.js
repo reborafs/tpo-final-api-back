@@ -20,6 +20,14 @@ const ClaseSchema = Schema({
         type: String,
         required: [true, 'La categoria es obligatorio']
     },
+    tipoClase: {
+        type: String,
+        required: [true, 'El tipo clase es obligatorio']
+    },
+    frecuencia: {
+        type: String,
+        required: [true, 'La frecuencia es obligatorio']
+    },
     description: {
         type: String,
         required: [true, 'La descripcion es obligatorio']

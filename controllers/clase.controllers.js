@@ -50,6 +50,8 @@ const listaClaseGet = async(req = request, res = response) => {
                     _id: 1,
                     title: 1,
                     category: 1,
+                    tipoClase: 1,
+                    frecuencia: 1,
                     price: 1,
                     imgUrl: 1,
                     profesorName: {
@@ -74,8 +76,8 @@ const listaClaseGet = async(req = request, res = response) => {
 
 const claseCreate = async (req, res = response) => {
 
-    const { title, profesorId, category, description, price, imgUrl, commentId } = req.body;
-    const clase = new Clase({ title, profesorId, category, description, price, imgUrl, commentId });
+    const { title, profesorId, category, tipoClase, frecuencia, description, price, imgUrl, commentId } = req.body;
+    const clase = new Clase({ title, profesorId, category, tipoClase, frecuencia, description, price, imgUrl, commentId });
 
     //Guardar en la BD
     await clase.save();
