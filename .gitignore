@@ -131,3 +131,5 @@ dist
 
 # CUSTOM
 imagenes/*
+package-lock.json
+.package-lock.json
