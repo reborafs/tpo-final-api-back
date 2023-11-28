@@ -110,6 +110,8 @@ exports.loginUser = async function (user) {
         var _details = await User.findOne({
             email: user.email
         });
+        if  (_details == null) { throw Error("User not found.")}
+
         var passwordIsValid = bcrypt.compareSync(user.password, _details.password);
         if (!passwordIsValid) return 0;
 
@@ -121,7 +123,7 @@ exports.loginUser = async function (user) {
         return {token:token, user:_details};
     } catch (e) {
         // return a Error message describing the reason     
-        throw Error("Error while Login User")
+        throw Error(e.stack)
     }
 
 }

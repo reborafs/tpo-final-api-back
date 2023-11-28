@@ -101,12 +101,13 @@ exports.loginUser = async function (req, res, next) {
         // Calling the Service function with the new object from the Request Body
         var loginUser = await UserService.loginUser(User);
         if (loginUser===0)
-            return res.status(400).json({message: "Error en la contraseña"})
+            return res.status(401).json({status: 401, message: "Invalid username or password."})
         else
-            return res.status(201).json({loginUser, message: "Succesfully login"})
+            return res.status(200).json({loginUser, message: "Succesfully login."})
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
-        return res.status(400).json({status: 400, message: "Invalid username or password"})
+        console.log(e.stack);
+        return res.status(400).json({status: 400, message: "Invalid username or password."})
     }
 }
 
