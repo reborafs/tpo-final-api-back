@@ -35,6 +35,21 @@ exports.getUsersByMail = async function (req, res, next) {
     }
 }
 
+exports.getUserById = async function (req, res, next) {
+
+    // Check the existence of the query parameters, If doesn't exists assign a default value
+    console.log(req.body.userId)
+    try {
+        var Users = await UserService.getUserById(req.body.userId)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Users, message: "Succesfully Users Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+
 exports.createUser = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("llegue al controller",req.body)
@@ -47,11 +62,11 @@ exports.createUser = async function (req, res, next) {
     try {
         // Calling the Service function with the new object from the Request Body
         var createdUser = await UserService.createUser(User)
-        return res.status(201).json({createdUser, message: "Succesfully Created User"})
+        return res.status(201).json({createdUser, message: "Succesfully created user"})
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
         console.log(e)
-        return res.status(400).json({status: 400, message: "User Creation was Unsuccesfull"})
+        return res.status(400).json({status: 400, message: "User creation was unsuccesfull"})
     }
 }
 
@@ -64,7 +79,6 @@ exports.updateUser = async function (req, res, next) {
 
     
     var User = {
-       
         name: req.body.name ? req.body.name : null,
         email: req.body.email ? req.body.email : null,
         password: req.body.password ? req.body.password : null
@@ -111,6 +125,19 @@ exports.loginUser = async function (req, res, next) {
     }
 }
 
+
+exports.uploadImage = async function (req, res, next) {
+    try {
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+        let data = res.json(cldRes);
+        return res;
+      } catch (e) {
+        console.log(e.stack);
+        return res.status(400).json({status: 400, message: "Error while uploading."})
+    }
+}
 
     
     
