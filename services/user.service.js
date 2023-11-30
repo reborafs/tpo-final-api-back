@@ -28,6 +28,20 @@ exports.getUsers = async function (query, page, limit) {
     }
 }
 
+// Async function to get the User List
+exports.getUserById = async function (id) {
+    console.log(id)
+    try {
+        //Find the old User Object by the Id
+        var foundUser = await User.findOne(id);
+        console.log (foundUser);
+        return foundUser;
+    } catch (e) {
+        throw Error("Error occured while finding the User")
+    }
+}
+
+
 exports.createUser = async function (user) {
     // Creating a new Mongoose Object by using the new keyword
     var hashedPassword = bcrypt.hashSync(user.password, 8);

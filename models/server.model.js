@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-
+const cloudinary = require("cloudinary").v2;
+const Multer = require("multer");
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -12,6 +13,18 @@ class Server {
         this.claseContratadaRoutePath = '/api/clase-contratada';
         this.userRoutePath = '/api/users';
         
+        //Config image server
+        cloudinary.config({
+            cloud_name: process.env.CLOUD_NAME,
+            api_key: process.env.API_KEY,
+            api_secret: process.env.API_SECRET,
+          });
+
+        //Config multer middleware
+        const storage = new Multer.memoryStorage();
+        const upload = Multer({
+            storage,
+        });
 
         //Conectar a base de datos
         this.conectDB();
