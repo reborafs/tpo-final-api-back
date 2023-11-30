@@ -11,7 +11,7 @@ const claseGet = async(req = request, res = response) => {
 
     const { id } = req.params;
 
-    const clase = await Clase.findById(id)
+    const claseData = await Clase.findById(id)
     .populate({
         path: 'profesorId',
         select: 'name lastName'
@@ -20,6 +20,26 @@ const claseGet = async(req = request, res = response) => {
         path: 'commentId',
         select: 'comentarioInfo puntuacion statusComentario'
     });
+
+    const { _id, profesorId, statusClase, commentId, title, category, tipoClase, frecuencia, description, price, imgUrl } = claseData;
+
+    const comments = commentId.map(comment => {
+        return {
+            statusComentario: comment.statusComentario,
+            commentId: comment._id,
+            comentarioInfo: comment.comentarioInfo,
+            puntuacion: comment.puntuacion
+        };
+    });
+
+    const profesor = {
+        profesorId: profesorId._id,
+        profesorName: `${profesorId.name} ${profesorId.lastName}`
+    }
+
+    const claseId = { claseId: _id}
+
+    const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, description, price, imgUrl, ...profesor, comments }
 
 
     res.json({
