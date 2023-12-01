@@ -1,5 +1,5 @@
 const Clase = require('../models/clase.model');
-const User = require('../models/User.model');
+const User = require('../models/user.model');
 
 const isClaseValid = async (req) => {
 

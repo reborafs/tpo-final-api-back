@@ -1,5 +1,5 @@
 // Gettign the Newly created Mongoose Model we just created 
-var User = require('../models/User.model');
+var User = require('../models/user.model');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
@@ -51,7 +51,12 @@ exports.createUser = async function (user) {
         lastName: user.lastName,
         email: user.email,
         date: new Date(),
-        password: hashedPassword
+        password: hashedPassword,
+        titulo: user.titulo,
+        exp: user.exp,
+        imgUrl: user.imgUrl,
+        telefono: user.telefono,
+        bio: user.bio,
     })
 
     try {
@@ -72,28 +77,35 @@ exports.createUser = async function (user) {
 
 exports.updateUser = async function (user) {
     
-    var id = {name :user.name}
+    var id = user._id
     console.log(id)
     try {
         //Find the old User Object by the Id
-        var oldUser = await User.findOne(id);
-        console.log (oldUser)
+        var oldUser = await User.findById(id);
+        console.log ("Found User: ", oldUser);
     } catch (e) {
-        throw Error("Error occured while Finding the User")
+        console.error(e);
+        throw Error("Error occured while Finding the User");
     }
     // If no old User Object exists return false
     if (!oldUser) {
+        console.log("user not found");
         return false;
     }
     //Edit the User Object
-    var hashedPassword = bcrypt.hashSync(user.password, 8);
-    oldUser.name = user.name
-    oldUser.email = user.email
-    oldUser.password = hashedPassword
+    console.log("Old user: ", oldUser);
+    oldUser.name = user.name  ? user.name : oldUser.name;
+    oldUser.lastName = user.lastName ? user.lastName : oldUser.lastName;
+    oldUser.email = user.email ? user.email : oldUser.email;
+    oldUser.password = user.password ? bcrypt.hashSync(user.password, 8) : oldUser.password;
+    oldUser.imgUrl = user.imgUrl ? user.imgUrl : oldUser.imgUrl;
+    oldUser.bio = user.bio ? user.bio : oldUser.bio;
+    console.log("New user: ", oldUser);
     try {
         var savedUser = await oldUser.save()
         return savedUser;
     } catch (e) {
+        console.error(e);
         throw Error("And Error occured while updating the User");
     }
 }
