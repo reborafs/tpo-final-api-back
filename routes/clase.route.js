@@ -14,7 +14,8 @@ const { claseGet,
         claseDelete,
         misClaseGet,
         claseContratadaGet,
-        comentarioUpdateParam } = require('../controllers/clase.controllers');
+        comentarioUpdateParam,
+        comentarioCreatePostman } = require('../controllers/clase.controllers');
 
 
 
@@ -35,6 +36,7 @@ router.post('/crear-clase', [
     check('category', 'El nombre es obligatorio').not().isEmpty(),
     check('tipoClase', 'El tipo clase es obligatorio').not().isEmpty(),
     check('frecuencia', 'La frecuencia es obligatorio').not().isEmpty(),
+    check('duracion', 'La frecuencia es obligatorio').not().isEmpty(),
     check('description', 'El nombre es obligatorio').not().isEmpty(),
     check('price', 'El nombre es obligatorio').not().isEmpty(),
     check('imgUrl', 'El nombre es obligatorio').not().isEmpty(),
@@ -49,6 +51,7 @@ router.put('/actualizar-clase/:id', [
     check('category', 'El nombre es obligatorio').not().isEmpty(),
     check('tipoClase', 'El tipo clase es obligatorio').not().isEmpty(),
     check('frecuencia', 'La frecuencia es obligatorio').not().isEmpty(),
+    check('duracion', 'La frecuencia es obligatorio').not().isEmpty(),
     check('description', 'El nombre es obligatorio').not().isEmpty(),
     check('price', 'El nombre es obligatorio').not().isEmpty(),
     check('imgUrl', 'El nombre es obligatorio').not().isEmpty(),
@@ -73,5 +76,12 @@ router.put('/actualizar-comment/:id', [
     check('statusComentario', 'El statusComentario es obligatorio').not().isEmpty(),
     validateFields
 ] , comentarioUpdateParam);
+
+router.post('/create-comment', [
+    check('comentarioInfo', 'El comentarioInfo es obligatorio').not().isEmpty(),
+    check('calificacion', 'El calificacion es obligatorio').not().isEmpty(),
+    check('autor', 'El autor es obligatorio').not().isEmpty(),
+    validateFields
+] , comentarioCreatePostman);
 
 module.exports = router;

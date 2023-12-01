@@ -28,6 +28,10 @@ const ClaseSchema = Schema({
         type: String,
         required: [true, 'La frecuencia es obligatorio']
     },
+    duracion: {
+        type: String,
+        required: [true, 'La duracion es obligatorio']
+    },
     description: {
         type: String,
         required: [true, 'La descripcion es obligatorio']
