@@ -9,7 +9,8 @@ const { isClaseValid,
 
 const { claseContratadaGet,
         listaClaseContratadaGet,
-        claseContratadaCreate } = require('../controllers/claseContratada.controllers');
+        claseContratadaCreate,
+        sendMailAlumno } = require('../controllers/claseContratada.controllers');
         
 const router = Router();
 
@@ -23,6 +24,12 @@ router.post('/ver-clase-contratada/contratar/:id', [
     check('nombreAlumno', 'El nombre es obligatorio').not().isEmpty(),
     validateFields
 ] , claseContratadaCreate);
+
+
+router.post('/send-mail', [
+    check('email', 'El mail es obligatorio').not().isEmpty(),
+    validateFields
+] , sendMailAlumno);
 
 router.get('/ver-clase-contratada/:id',  [
     check('id', 'No es un ID válido').isMongoId(),

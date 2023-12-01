@@ -4,6 +4,7 @@ const ClaseContratada = require('../models/claseContrtada.model');
 const Clase = require('../models/clase.model');
 const User = require('../models/user.model');
 const Comentario = require('../models/comentario.model');
+const transporter = require('../helpers/mailer');
 
 
 const claseContratadaCreate = async (req, res = response) => {
@@ -62,8 +63,26 @@ const listaClaseContratadaGet = async (req, res = response) => {
 };
 
 
+
+const sendMailAlumno = async(req = request, res = response) => {
+
+    let result = await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
+        to: 'francor.96@gmail.com',
+        subject: "CLASE CONTRATADA DE MUSICA",
+        text: "Hello world!", // plain text body
+        html: "<b>Hello world!</b>",
+
+    });
+
+    console.log("result", {result});
+    res.status(200).json({ok: true, message: "email sent."})
+
+}
+
 module.exports = {
     claseContratadaCreate,
     claseContratadaGet,
-    listaClaseContratadaGet
+    listaClaseContratadaGet,
+    sendMailAlumno
 }
