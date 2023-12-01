@@ -2,7 +2,7 @@ const { response, request } = require('express');
 
 const ClaseContratada = require('../models/claseContrtada.model');
 const Clase = require('../models/clase.model');
-const User = require('../models/User.model');
+const User = require('../models/user.model');
 const Comentario = require('../models/comentario.model');
 
 
