@@ -5,13 +5,21 @@ const ComentarioSchema = Schema({
     comentarioInfo: {
         type: String
     },
-    puntuacion: {
+    calificacion: {
         type: Number
     },
     statusComentario: {
         type: Boolean,
         required: true,
         default: true
+    },
+    autor: {
+        type: String,
+        required: true
+    },
+    createDate: {
+        type: Date,
+        default: Date.now
     }
 })
 

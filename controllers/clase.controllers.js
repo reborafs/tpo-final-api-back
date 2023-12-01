@@ -18,7 +18,7 @@ const claseGet = async(req = request, res = response) => {
     })
     .populate({
         path: 'commentId',
-        select: 'comentarioInfo puntuacion statusComentario'
+        select: 'comentarioInfo calificacion statusComentario autor createDate'
     });
 
     const { _id, profesorId, statusClase, commentId, title, category, tipoClase, frecuencia, description, price, imgUrl } = claseData;
@@ -28,9 +28,24 @@ const claseGet = async(req = request, res = response) => {
             statusComentario: comment.statusComentario,
             commentId: comment._id,
             comentarioInfo: comment.comentarioInfo,
-            puntuacion: comment.puntuacion
+            calificacion: comment.calificacion,
+            autor: comment.autor,
+            createDate: comment.createDate
         };
     });
+
+    let cantCommentario = 0;
+    let calificacionComentario = 0;
+    comments.forEach( comentario => {
+        if(comentario.statusComentario == true){
+            calificacionComentario = calificacionComentario + comentario.calificacion;
+            cantCommentario++;
+        }
+    })
+
+    const calificacion = {
+        calificacion: calificacionComentario / cantCommentario
+    };
 
     const profesor = {
         profesorId: profesorId._id,
@@ -39,7 +54,7 @@ const claseGet = async(req = request, res = response) => {
 
     const claseId = { claseId: _id}
 
-    const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, description, price, imgUrl, ...profesor, comments }
+    const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, description, price, imgUrl, ...profesor, comments, ...calificacion }
 
 
     res.json({
@@ -53,40 +68,47 @@ const listaClaseGet = async(req = request, res = response) => {
     const { limit = 100, from = 0 } = req.query;
 
 
-    const [total, clases] = await Promise.all([
+    const [total, clasesData] = await Promise.all([
         Clase.countDocuments(query),
-        Clase.aggregate([
-            { $match: query },
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: 'profesorId',
-                    foreignField: '_id',
-                    as: 'profesor'
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    title: 1,
-                    category: 1,
-                    tipoClase: 1,
-                    frecuencia: 1,
-                    price: 1,
-                    imgUrl: 1,
-                    profesorName: {
-                        $concat: [
-                            { $arrayElemAt: ['$profesor.name', 0] },
-                            ' ',
-                            { $arrayElemAt: ['$profesor.lastName', 0] }
-                        ]
-                    }
-                }
-            },
-            { $skip: Number(from) },
-            { $limit: Number(limit) }
-        ])
+        Clase.find(query)
+            .populate({
+                path: 'profesorId',
+                select: 'name lastName'
+            })
+            .populate({
+                path: 'commentId',
+                select: 'comentarioInfo calificacion statusComentario autor createDate'
+            })
+            .skip(Number(from))
+            .limit(Number(limit))
     ]);
+
+    const clases = clasesData.map(clase => {
+
+        let cantCommentario = 0;
+        let calificacionComentario = 0;
+        clase.commentId.forEach( comentario => {
+            if(comentario.statusComentario == true){
+                calificacionComentario = calificacionComentario + comentario.calificacion;
+                cantCommentario++;
+            }
+        });
+
+
+
+        return {
+        claseId: clase._id,
+        title: clase.title,
+        profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
+        category: clase.category,
+        tipoClase: clase.tipoClase,
+        frecuencia: clase.frecuencia,
+        calificacion: calificacionComentario / cantCommentario,
+        price: clase.price,
+        imgUrl: clase.imgUrl,
+
+
+      }});
 
     res.json({
         total,
@@ -143,10 +165,10 @@ const claseDelete = async (req, res = response) => {
     });
 }
 
-const comentarioCreate = async (coment) => {
+const comentarioCreate = async (comment) => {
 
-    const { comentarioInfo, puntuacion } = coment;
-    const comentario = new Comentario({ comentarioInfo, puntuacion });
+    const { comentarioInfo, calificacion, autor } = comment;
+    const comentario = new Comentario({ comentarioInfo, calificacion, autor });
     
     const comentarioGuardado = await comentario.save();
 
@@ -154,11 +176,30 @@ const comentarioCreate = async (coment) => {
 
 };
 
-const comentarioUpdate = async (coment) => {
+const comentarioUpdate = async (comment) => {
 
-    const { id, ...resto } = coment;
+    const { id, ...resto } = comment;
 
     await Comentario.findByIdAndUpdate( id, resto );
+
+};
+
+const comentarioUpdateParam = async (req, res = response) => {
+
+    const { id } = req.params;
+    const { statusComentario } = req.body;
+
+    console.log('entro aqui');
+    console.log('id', id);
+
+    console.log('statusComentario aqui', statusComentario);
+
+
+    await Comentario.findByIdAndUpdate( id,  {statusComentario: statusComentario} );
+
+    res.status(200).json({
+        msg: 'actualizar API - Comentario actualizado'
+    });
 
 };
 
@@ -187,5 +228,6 @@ module.exports = {
     claseCreate,
     claseUpdate,
     claseDelete,
-    misClaseGet
+    misClaseGet,
+    comentarioUpdateParam
 }

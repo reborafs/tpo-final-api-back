@@ -13,7 +13,8 @@ const { claseGet,
         claseUpdate,
         claseDelete,
         misClaseGet,
-        claseContratadaGet } = require('../controllers/clase.controllers');
+        claseContratadaGet,
+        comentarioUpdateParam } = require('../controllers/clase.controllers');
 
 
 
@@ -66,5 +67,11 @@ router.get('/mis-clases/:id',  [
     check('id').custom( existsUserById ),
     validateFields
 ] , misClaseGet);
+
+router.put('/actualizar-comment/:id', [
+    check('id', 'No es un ID válido').isMongoId(),
+    check('statusComentario', 'El statusComentario es obligatorio').not().isEmpty(),
+    validateFields
+] , comentarioUpdateParam);
 
 module.exports = router;
