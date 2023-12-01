@@ -7,7 +7,12 @@ var UserSchema = new mongoose.Schema({
     lastName: String,
     email: String,
     password: String,
-    date: Date
+    titulo: String,
+    exp: Number,
+    date: Date,
+    imgUrl: String,
+    telefono: Number,
+    bio: String,
 })
 
 UserSchema.plugin(mongoosePaginate)
