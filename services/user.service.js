@@ -30,10 +30,10 @@ exports.getUsers = async function (query, page, limit) {
 
 // Async function to get the User List
 exports.getUserById = async function (id) {
-    console.log(id)
+    console.log("ID TO BE FOUND: ", id)
     try {
         //Find the old User Object by the Id
-        var foundUser = await User.findOne(id);
+        var foundUser = await User.findById(id);
         console.log (foundUser);
         return foundUser;
     } catch (e) {

@@ -46,9 +46,9 @@ exports.getUsersByMail = async function (req, res, next) {
 exports.getUserById = async function (req, res, next) {
 
     // Check the existence of the query parameters, If doesn't exists assign a default value
-    console.log(req.body.userId)
+    const { id } = req.params;
     try {
-        var Users = await UserService.getUserById(req.body.userId)
+        var Users = await UserService.getUserById(id)
         return res.status(200).json({status: 200, data: Users, message: "Succesfully retrieved user by id."});
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
