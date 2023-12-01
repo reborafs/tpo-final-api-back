@@ -14,14 +14,14 @@ const claseGet = async(req = request, res = response) => {
     const claseData = await Clase.findById(id)
     .populate({
         path: 'profesorId',
-        select: 'name lastName'
+        select: 'name lastName exp bio titulo'
     })
     .populate({
         path: 'commentId',
         select: 'comentarioInfo calificacion statusComentario autor createDate'
     });
 
-    const { _id, profesorId, statusClase, commentId, title, category, tipoClase, frecuencia, description, price, imgUrl } = claseData;
+    const { _id, profesorId, statusClase, commentId, title, category, tipoClase, frecuencia, duracion, description, price, imgUrl } = claseData;
 
     const comments = commentId.map(comment => {
         return {
@@ -49,12 +49,15 @@ const claseGet = async(req = request, res = response) => {
 
     const profesor = {
         profesorId: profesorId._id,
-        profesorName: `${profesorId.name} ${profesorId.lastName}`
+        profesorName: `${profesorId.name} ${profesorId.lastName}`,
+        profesorExp: profesorId.exp,
+        profesorBio: profesorId.bio,
+        profesorTitulo:profesorId.titulo
     }
 
     const claseId = { claseId: _id}
 
-    const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, description, price, imgUrl, ...profesor, comments, ...calificacion }
+    const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, duracion, description, price, imgUrl, ...profesor, comments, ...calificacion }
 
 
     res.json({
@@ -103,6 +106,7 @@ const listaClaseGet = async(req = request, res = response) => {
         category: clase.category,
         tipoClase: clase.tipoClase,
         frecuencia: clase.frecuencia,
+        duracion: clase.duracion,
         calificacion: calificacionComentario / cantCommentario,
         price: clase.price,
         imgUrl: clase.imgUrl,
@@ -118,8 +122,8 @@ const listaClaseGet = async(req = request, res = response) => {
 
 const claseCreate = async (req, res = response) => {
 
-    const { title, profesorId, category, tipoClase, frecuencia, description, price, imgUrl, commentId } = req.body;
-    const clase = new Clase({ title, profesorId, category, tipoClase, frecuencia, description, price, imgUrl, commentId });
+    const { title, profesorId, category, tipoClase, frecuencia, duracion, description, price, imgUrl, commentId } = req.body;
+    const clase = new Clase({ title, profesorId, category, tipoClase, frecuencia, duracion, description, price, imgUrl, commentId });
 
     //Guardar en la BD
     await clase.save();
@@ -189,16 +193,23 @@ const comentarioUpdateParam = async (req, res = response) => {
     const { id } = req.params;
     const { statusComentario } = req.body;
 
-    console.log('entro aqui');
-    console.log('id', id);
-
-    console.log('statusComentario aqui', statusComentario);
-
-
     await Comentario.findByIdAndUpdate( id,  {statusComentario: statusComentario} );
 
     res.status(200).json({
         msg: 'actualizar API - Comentario actualizado'
+    });
+
+};
+
+const comentarioCreatePostman = async (req, res = response) => {
+
+    const { comentarioInfo, calificacion, autor } =  req.body;
+    const comentario = new Comentario({ comentarioInfo, calificacion, autor });
+    
+    await comentario.save();
+
+    res.status(200).json({
+        msg: 'crear API - Comentario creado'
     });
 
 };
@@ -209,12 +220,48 @@ const misClaseGet = async (req, res = response) => {
     const query = { profesorId: id }
     const { limit = 100, from = 0 } = req.query;
 
-    const [total, clases] = await Promise.all([
+    const [total, clasesData] = await Promise.all([
         Clase.countDocuments(query),
         Clase.find(query)
+            .populate({
+                path: 'profesorId',
+                select: 'name lastName'
+            })
+            .populate({
+                path: 'commentId',
+                select: 'comentarioInfo calificacion statusComentario autor createDate'
+            })
             .skip(Number(from))
             .limit(Number(limit))
-    ])
+    ]);
+
+    const clases = clasesData.map(clase => {
+
+        let cantCommentario = 0;
+        let calificacionComentario = 0;
+        clase.commentId.forEach( comentario => {
+            if(comentario.statusComentario == true){
+                calificacionComentario = calificacionComentario + comentario.calificacion;
+                cantCommentario++;
+            }
+        });
+
+
+
+        return {
+        claseId: clase._id,
+        title: clase.title,
+        profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
+        category: clase.category,
+        tipoClase: clase.tipoClase,
+        frecuencia: clase.frecuencia,
+        duracion: clase.duracion,
+        calificacion: calificacionComentario / cantCommentario,
+        price: clase.price,
+        imgUrl: clase.imgUrl,
+
+
+      }});
 
     res.json({
         total,
@@ -229,5 +276,6 @@ module.exports = {
     claseUpdate,
     claseDelete,
     misClaseGet,
-    comentarioUpdateParam
+    comentarioUpdateParam,
+    comentarioCreatePostman
 }
