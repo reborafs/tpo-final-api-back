@@ -8,7 +8,7 @@ const { isClaseValid,
         existsUserById } = require('../helpers/db-validators');
 
 const { claseContratadaGet,
-        listaClaseContratadaGet,
+        getListaClaseContratada,
         claseContratadaCreate,
         sendMailAlumno } = require('../controllers/claseContratada.controllers');
         
@@ -40,6 +40,6 @@ router.get('/lista-clases-contratada/:id',  [
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existsUserById ),
     validateFields
-] , listaClaseContratadaGet);
+] , getListaClaseContratada);
 
 module.exports = router;
