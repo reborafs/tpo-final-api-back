@@ -24,47 +24,86 @@ const claseContratadaCreate = async (req, res = response) => {
 }
 
 
-const claseContratadaGet = async(req = request, res = response) => {
+const claseContratadaGet = async (req = request, res = response) => {
 
     const { id } = req.params;
-    const claseContratada = await ClaseContratada.findById(id).populate("claseId");
+    const claseData = await ClaseContratada.findById(id)
+            .populate({
+                path: 'claseId',
+                select: '_id title imgUrl'
+            });
 
-    const { claseId } = claseContratada;
-    const { profesorId } = claseId;
+    
 
-    const { name, lastName } = await User.findById(profesorId)
+    const { claseId } = claseData;
 
-    const profesorName = `${name} ${lastName}`;
+    const claseContratada = {
+        claseContratadaId: id,
+        claseId: claseId._id,
+        title: claseId.title,
+        statusCompletada: claseData.statusCompletada,
+        statusAceptada: claseData.statusAceptada,
+        telefono: claseData.telefono,
+        mail: claseData.mail,
+        horario: claseData.horario,
+        mensaje: claseData.mensaje,
+        imgUrl: claseId.imgUrl,
+        nombreAlumno: claseData.nombreAlumno,
+    }
+
+
 
     res.json({
-        claseContratada,
-        profesorName
+        claseContratada
     });
 }
 
-const listaClaseContratadaGet = async (req, res = response) => {
-    
+const getListaClaseContratada = async (req, res = response) => {
+
     const { id } = req.params;
     const query = { profesorId: id }
     const { limit = 100, from = 0 } = req.query;
 
-    const [total, clasecontratadas] = await Promise.all([
+    const [total, clasesData] = await Promise.all([
         ClaseContratada.countDocuments(query),
         ClaseContratada.find(query)
-             .skip(Number(from))
-             .limit(Number(limit))
-             .populate("claseId")
+            .skip(Number(from))
+            .limit(Number(limit))
+            .populate({
+                path: 'claseId',
+                select: '_id title profesorId category tipoClase frecuencia duracion price imgUrl'
+            })
     ])
+
+    const { name, lastName} = await User.findById(id);
+
+    
+
+    const claseContratadas = clasesData.map(clase => {
+
+        return {
+            claseContratadaId: clase._id,
+            title: clase.claseId.title,
+            profesorName: `${name} ${lastName}`,
+            category: clase.claseId.category,
+            tipoClase: clase.claseId.tipoClase,
+            frecuencia: clase.claseId.frecuencia,
+            duracion: clase.claseId.duracion,
+            price: clase.claseId.price,
+            imgUrl: clase.claseId.imgUrl,
+          }});
+
+          console.log('clasesData',clasesData);
 
     res.json({
         total,
-        clasecontratadas
+        claseContratadas
     });
 };
 
 
 
-const sendMailAlumno = async(req = request, res = response) => {
+const sendMailAlumno = async (req = request, res = response) => {
 
     let result = await transporter.sendMail({
         from: process.env.EMAIL_FROM,
@@ -75,14 +114,14 @@ const sendMailAlumno = async(req = request, res = response) => {
 
     });
 
-    console.log("result", {result});
-    res.status(200).json({ok: true, message: "email sent."})
+    console.log("result", { result });
+    res.status(200).json({ ok: true, message: "email sent." })
 
 }
 
 module.exports = {
     claseContratadaCreate,
     claseContratadaGet,
-    listaClaseContratadaGet,
+    getListaClaseContratada,
     sendMailAlumno
 }
