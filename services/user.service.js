@@ -98,6 +98,9 @@ exports.updateUser = async function (user) {
     oldUser.lastName = user.lastName ? user.lastName : oldUser.lastName;
     oldUser.email = user.email ? user.email : oldUser.email;
     oldUser.password = user.password ? bcrypt.hashSync(user.password, 8) : oldUser.password;
+    oldUser.titulo = user.titulo ? user.titulo : oldUser.titulo;
+    oldUser.exp = user.exp ? user.exp : oldUser.exp;
+    oldUser.telefono = user.telefono ? user.telefono : oldUser.telefono;
     oldUser.imgUrl = user.imgUrl ? user.imgUrl : oldUser.imgUrl;
     oldUser.bio = user.bio ? user.bio : oldUser.bio;
     console.log("New user: ", oldUser);
