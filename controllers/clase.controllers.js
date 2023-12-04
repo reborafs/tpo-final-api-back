@@ -1,4 +1,5 @@
 const { response, request } = require('express');
+const cloudinary = require("cloudinary").v2;
 
 const ClaseContratada = require('../models/claseContrtada.model');
 const Clase = require('../models/clase.model');
@@ -269,6 +270,31 @@ const misClaseGet = async (req, res = response) => {
     });
 };
 
+async function handleUpload(file) {
+    const res = await cloudinary.uploader.upload(file, {
+      resource_type: "auto",
+    });
+    return res;
+  }
+
+const uploadImage = async function (req, res, next) {
+    try {
+        // Upload Image
+        console.log("Uploading profile image...")
+        console.log("body",req.body)
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+        console.log("cldRes", cldRes)
+        let data = res.json(cldRes);       
+        return data;
+      } catch (e) {
+        console.log(e.stack);
+        return res.status(400).json({status: 400, message: "Error while uploading."})
+    }
+}
+
+
 module.exports = {
     claseGet,
     listaClaseGet,
@@ -277,5 +303,6 @@ module.exports = {
     claseDelete,
     misClaseGet,
     comentarioUpdateParam,
-    comentarioCreatePostman
+    comentarioCreatePostman,
+    uploadImage
 }

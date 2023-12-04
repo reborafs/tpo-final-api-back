@@ -30,7 +30,10 @@ router.get('/userById/:id',  [
 
 
 //router.put('/update', Authorization, UserController.updateUser)
-router.put('/update', UserController.updateUser)
+router.put('/update',  [
+  check('id', 'No es un ID válido').isMongoId()
+] , UserController.updateUser);
+
 //router.delete('/delete', Authorization, UserController.removeUser)
 router.delete('/delete',  UserController.removeUser)
 
