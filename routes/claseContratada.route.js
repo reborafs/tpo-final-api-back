@@ -10,7 +10,8 @@ const { isClaseValid,
 const { claseContratadaGet,
         getListaClaseContratada,
         claseContratadaCreate,
-        sendMailAlumno } = require('../controllers/claseContratada.controllers');
+        sendMailAlumno,
+        statusClaseContratadaUpdate } = require('../controllers/claseContratada.controllers');
         
 const router = Router();
 
@@ -41,5 +42,10 @@ router.get('/lista-clases-contratada/:id',  [
     check('id').custom( existsUserById ),
     validateFields
 ] , getListaClaseContratada);
+
+router.put('/lista-clases-contratada-status/:id',  [
+    check('id', 'No es un ID válido').isMongoId(),
+    validateFields
+] , statusClaseContratadaUpdate);
 
 module.exports = router;
