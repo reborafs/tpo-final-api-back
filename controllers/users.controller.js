@@ -1,5 +1,7 @@
+const { response } = require('express');
 var UserService = require('../services/user.service');
 const cloudinary = require("cloudinary").v2;
+const transporter = require('../helpers/mailer');
 
 //Config image server
 cloudinary.config({
@@ -12,7 +14,7 @@ cloudinary.config({
 _this = this;
 
 // Async Controller function to get the To do List
-exports.getUsers = async function (req, res, next) {
+const getUsers = async function (req, res, next) {
 
     // Check the existence of the query parameters, If doesn't exists assign a default value
     var page = req.query.page ? req.query.page : 1
@@ -26,7 +28,8 @@ exports.getUsers = async function (req, res, next) {
         return res.status(400).json({status: 400, message: e.message});
     }
 }
-exports.getUsersByMail = async function (req, res, next) {
+
+const getUsersByMail = async function (req, res, next) {
 
     // Check the existence of the query parameters, If doesn't exists assign a default value
     var page = req.query.page ? req.query.page : 1
@@ -43,7 +46,7 @@ exports.getUsersByMail = async function (req, res, next) {
     }
 }
 
-exports.getUserById = async function (req, res, next) {
+const getUserById = async function (req, res, next) {
 
     // Check the existence of the query parameters, If doesn't exists assign a default value
     const { id } = req.params;
@@ -57,7 +60,7 @@ exports.getUserById = async function (req, res, next) {
 }
 
 
-exports.createUser = async function (req, res, next) {
+const createUser = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("llegue al controller",req.body)
     var User = {
@@ -82,7 +85,7 @@ exports.createUser = async function (req, res, next) {
     }
 }
 
-exports.updateUser = async function (req, res, next) {
+const updateUser = async function (req, res, next) {
 
     // Id is necessary for the update
     if (!req.body.id) {
@@ -112,7 +115,7 @@ exports.updateUser = async function (req, res, next) {
     }
 }
 
-exports.removeUser = async function (req, res, next) {
+const removeUser = async function (req, res, next) {
 
     var id = req.body.id;
     try {
@@ -124,7 +127,7 @@ exports.removeUser = async function (req, res, next) {
 }
 
 
-exports.loginUser = async function (req, res, next) {
+const loginUser = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("body",req.body)
     var User = {
@@ -153,7 +156,7 @@ async function handleUpload(file) {
     return res;
   }
 
-exports.uploadImage = async function (req, res, next) {
+const uploadImage = async function (req, res, next) {
     try {
         // Upload Image
         console.log("Uploading profile image...")
@@ -170,5 +173,55 @@ exports.uploadImage = async function (req, res, next) {
     }
 }
 
-    
-    
+
+
+const sendResetPasswordMail = async (email) => {
+    console.log("INTENTO REQ MAIL")
+    let result = await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
+        to: email,
+        subject: "Recuperar Contraseña",
+        text: "Here's your link: localhost", // plain text body
+        html: "<b>Thank you!</b>",
+    });
+    console.log("result", { result });
+    // TODO: Manejo de error de mail service
+    return result;
+
+}
+
+const resetPassword = async function (req, res, next) {
+    let page = req.query.page ? req.query.page : 1
+    let limit = req.query.limit ? req.query.limit : 1;
+    let filtro = {email: req.body.email};
+    console.log(page)
+    console.log(limit)
+    console.log(filtro)
+    try {
+        console.log("getUsersByMail")
+        let response = await UserService.getUsers(filtro, page, limit)
+        console.log("getUsersByMail END")
+        if (response.total == 0) {
+            return res.status(400).json({status: 400, message: "No existe usuario con el mail "+ req.body.email});
+        } else {
+            console.log("Recovering password: ", req.body.email);
+            let response = await sendResetPasswordMail(req.body.email);
+            return res.status(200).json({status: 200, ok: true, message: "Reinicio de contraseña enviado a "+ req.body.email});
+        }
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+
+module.exports = {
+    getUsers,
+    getUsersByMail,
+    getUserById,
+    createUser,
+    updateUser,
+    removeUser,
+    loginUser,
+    uploadImage,
+    resetPassword
+}

@@ -1,0 +1,352 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+	  "title": "ProfExpres API Documentation",
+	  "version": "1.0.0"
+	},
+	"paths": {
+	  "/api/clases/ver-clase/{id}": {
+		"get": {
+		  "summary": "Get class by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "Class ID"
+			}
+		  ],
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/catalogo": {
+		"get": {
+		  "summary": "Get list of classes",
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/crear-clase": {
+		"post": {
+		  "summary": "Create a new class",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "title": "New Class",
+				  "profesorId": "123",
+				  "category": "Science",
+				  "tipoClase": "Online",
+				  "frecuencia": "Weekly",
+				  "duracion": "1 hour",
+				  "description": "Description of the class",
+				  "price": 20.99
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/actualizar-clase/{id}": {
+		"put": {
+		  "summary": "Update class by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "Class ID"
+			}
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "title": "Updated Class",
+				  "category": "Math",
+				  "tipoClase": "In-person",
+				  "frecuencia": "Daily",
+				  "duracion": "2 hours",
+				  "description": "Updated description",
+				  "price": 25.99,
+				  "imgUrl": "https://example.com/image.jpg"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/borrar-clase/{id}": {
+		"delete": {
+		  "summary": "Delete class by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "Class ID"
+			}
+		  ],
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/mis-clases/{id}": {
+		"get": {
+		  "summary": "Get user's classes by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "User ID"
+			}
+		  ],
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/actualizar-comment/{id}": {
+		"put": {
+		  "summary": "Update comment by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "Comment ID"
+			}
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "statusComentario": "approved"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/create-comment": {
+		"post": {
+		  "summary": "Create a new comment",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "comentarioInfo": "Great class!",
+				  "calificacion": 5,
+				  "autor": "John Doe"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases/image-upload": {
+		"post": {
+		  "summary": "Upload image",
+		  "requestBody": {
+			"content": {
+			  "multipart/form-data": {
+				"schema": {
+				  "type": "object",
+				  "properties": {
+					"my_img": {
+					  "type": "string",
+					  "format": "binary"
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases-contratadas/ver-clase-contratada/contratar/{id}": {
+		"post": {
+		  "summary": "Contract a class",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "Class ID"
+			}
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "telefono": "123456789",
+				  "mail": "example@email.com",
+				  "horario": "Monday 10:00 AM",
+				  "mensaje": "I want to join this class!",
+				  "nombreAlumno": "John Doe"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/clases-contratadas/send-mail": {
+		"post": {
+		  "summary": "Send mail to alumno",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "email": "example@email.com"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/users/": {
+		"get": {
+		  "summary": "Get all users",
+		  "responses": {}
+		}
+	  },
+	  "/api/users/registration": {
+		"post": {
+		  "summary": "Register a new user",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "username": "john_doe",
+				  "email": "john@example.com",
+				  "password": "securePassword"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/users/login/": {
+		"post": {
+		  "summary": "User login",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "email": "john@example.com",
+				  "password": "securePassword"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/users/image-upload": {
+		"post": {
+		  "summary": "Upload user image",
+		  "requestBody": {
+			"content": {
+			  "multipart/form-data": {
+				"schema": {
+				  "type": "object",
+				  "properties": {
+					"my_img": {
+					  "type": "string",
+					  "format": "binary"
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/users/users": {
+		"get": {
+		  "summary": "Get all users",
+		  "responses": {}
+		}
+	  },
+	  "/api/users/userByMail": {
+		"get": {
+		  "summary": "Get users by mail",
+		  "responses": {}
+		}
+	  },
+	  "/api/users/userById/{id}": {
+		"get": {
+		  "summary": "Get user by ID",
+		  "parameters": [
+			{
+			  "name": "id",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  },
+			  "description": "User ID"
+			}
+		  ],
+		  "responses": {}
+		}
+	  },
+	  "/api/users/update": {
+		"put": {
+		  "summary": "Update user",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "id": "123",
+				  "username": "updated_user",
+				  "email": "updated@example.com"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  },
+	  "/api/users/delete": {
+		"delete": {
+		  "summary": "Delete user",
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"example": {
+				  "id": "123"
+				}
+			  }
+			}
+		  },
+		  "responses": {}
+		}
+	  }
+	}
+  }
+  
