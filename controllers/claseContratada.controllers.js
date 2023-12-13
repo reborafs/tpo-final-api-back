@@ -77,7 +77,7 @@ const getListaClaseContratada = async (req, res = response) => {
 
     const { name, lastName} = await User.findById(id);
 
-    
+    //console.log('clasesData',clasesData);
 
     const claseContratadas = clasesData.map(clase => {
 
@@ -91,9 +91,16 @@ const getListaClaseContratada = async (req, res = response) => {
             duracion: clase.claseId.duracion,
             price: clase.claseId.price,
             imgUrl: clase.claseId.imgUrl,
+            statusCompletada: clase.statusCompletada,
+            statusAceptada: clase.statusAceptada,
+            nombreAlumno: clase.nombreAlumno,
+            telefono: clase.telefono,
+            mail: clase.mail,
+            horario: clase.horario,
+            mensaje: clase.mensaje,
           }});
 
-          console.log('clasesData',clasesData);
+          //console.log('clasesData',clasesData);
 
     res.json({
         total,
@@ -114,14 +121,24 @@ const sendMailAlumno = async (req = request, res = response) => {
 
     });
 
-    console.log("result", { result });
+    //console.log("result", { result });
     res.status(200).json({ ok: true, message: "email sent." })
 
 }
+
+const statusClaseContratadaUpdate = async (req, res = response) => {
+
+    const { id } = req.params;
+    const { statusClaseContratada } = req.body;
+
+    await ClaseContratada.findByIdAndUpdate( id,  {statusAceptada: statusClaseContratada} );
+
+};
 
 module.exports = {
     claseContratadaCreate,
     claseContratadaGet,
     getListaClaseContratada,
-    sendMailAlumno
+    sendMailAlumno,
+    statusClaseContratadaUpdate
 }

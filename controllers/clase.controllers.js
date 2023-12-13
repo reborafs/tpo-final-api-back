@@ -8,19 +8,19 @@ const Comentario = require('../models/comentario.model');
 
 
 
-const claseGet = async(req = request, res = response) => {
+const claseGet = async (req = request, res = response) => {
 
     const { id } = req.params;
 
     const claseData = await Clase.findById(id)
-    .populate({
-        path: 'profesorId',
-        select: 'name lastName exp bio titulo'
-    })
-    .populate({
-        path: 'commentId',
-        select: 'comentarioInfo calificacion statusComentario autor createDate'
-    });
+        .populate({
+            path: 'profesorId',
+            select: 'name lastName exp bio titulo'
+        })
+        .populate({
+            path: 'commentId',
+            select: 'comentarioInfo calificacion statusComentario autor createDate'
+        });
 
     const { _id, profesorId, statusClase, commentId, title, category, tipoClase, frecuencia, duracion, description, price, imgUrl } = claseData;
 
@@ -37,8 +37,8 @@ const claseGet = async(req = request, res = response) => {
 
     let cantCommentario = 0;
     let calificacionComentario = 0;
-    comments.forEach( comentario => {
-        if(comentario.statusComentario == true){
+    comments.forEach(comentario => {
+        if (comentario.statusComentario == true) {
             calificacionComentario = calificacionComentario + comentario.calificacion;
             cantCommentario++;
         }
@@ -53,10 +53,10 @@ const claseGet = async(req = request, res = response) => {
         profesorName: `${profesorId.name} ${profesorId.lastName}`,
         profesorExp: profesorId.exp,
         profesorBio: profesorId.bio,
-        profesorTitulo:profesorId.titulo
+        profesorTitulo: profesorId.titulo
     }
 
-    const claseId = { claseId: _id}
+    const claseId = { claseId: _id }
 
     const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, duracion, description, price, imgUrl, ...profesor, comments, ...calificacion }
 
@@ -66,7 +66,7 @@ const claseGet = async(req = request, res = response) => {
     });
 }
 
-const listaClaseGet = async(req = request, res = response) => {
+const listaClaseGet = async (req = request, res = response) => {
 
     const query = { statusClase: true }
     const { limit = 100, from = 0 } = req.query;
@@ -91,8 +91,8 @@ const listaClaseGet = async(req = request, res = response) => {
 
         let cantCommentario = 0;
         let calificacionComentario = 0;
-        clase.commentId.forEach( comentario => {
-            if(comentario.statusComentario == true){
+        clase.commentId.forEach(comentario => {
+            if (comentario.statusComentario == true) {
                 calificacionComentario = calificacionComentario + comentario.calificacion;
                 cantCommentario++;
             }
@@ -101,19 +101,20 @@ const listaClaseGet = async(req = request, res = response) => {
 
 
         return {
-        claseId: clase._id,
-        title: clase.title,
-        profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
-        category: clase.category,
-        tipoClase: clase.tipoClase,
-        frecuencia: clase.frecuencia,
-        duracion: clase.duracion,
-        calificacion: calificacionComentario / cantCommentario,
-        price: clase.price,
-        imgUrl: clase.imgUrl,
+            claseId: clase._id,
+            title: clase.title,
+            profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
+            category: clase.category,
+            tipoClase: clase.tipoClase,
+            frecuencia: clase.frecuencia,
+            duracion: clase.duracion,
+            calificacion: calificacionComentario / cantCommentario,
+            price: clase.price,
+            imgUrl: clase.imgUrl,
 
 
-      }});
+        }
+    });
 
     res.json({
         total,
@@ -152,7 +153,7 @@ const claseUpdate = async (req, res = response) => {
 
     await Clase.findByIdAndUpdate(id, { $push: { commentId: { $each: nuevosIdsDeComentarios } } });
 
-    await Clase.findByIdAndUpdate( id, resto );
+    await Clase.findByIdAndUpdate(id, resto);
 
     res.status(200).json({
         msg: 'put API - Clase actualizada'
@@ -163,7 +164,7 @@ const claseDelete = async (req, res = response) => {
 
     const { id } = req.params;
 
-    await Clase.findByIdAndUpdate( id, {statusClase: false} );
+    await Clase.findByIdAndUpdate(id, { statusClase: false });
 
     res.status(200).json({
         msg: 'delete API - Clase borrada'
@@ -174,7 +175,7 @@ const comentarioCreate = async (comment) => {
 
     const { comentarioInfo, calificacion, autor } = comment;
     const comentario = new Comentario({ comentarioInfo, calificacion, autor });
-    
+
     const comentarioGuardado = await comentario.save();
 
     return comentarioGuardado._id;
@@ -185,7 +186,7 @@ const comentarioUpdate = async (comment) => {
 
     const { id, ...resto } = comment;
 
-    await Comentario.findByIdAndUpdate( id, resto );
+    await Comentario.findByIdAndUpdate(id, resto);
 
 };
 
@@ -194,7 +195,7 @@ const comentarioUpdateParam = async (req, res = response) => {
     const { id } = req.params;
     const { statusComentario } = req.body;
 
-    await Comentario.findByIdAndUpdate( id,  {statusComentario: statusComentario} );
+    await Comentario.findByIdAndUpdate(id, { statusComentario: statusComentario });
 
     res.status(200).json({
         msg: 'actualizar API - Comentario actualizado'
@@ -204,9 +205,9 @@ const comentarioUpdateParam = async (req, res = response) => {
 
 const comentarioCreatePostman = async (req, res = response) => {
 
-    const { comentarioInfo, calificacion, autor } =  req.body;
+    const { comentarioInfo, calificacion, autor } = req.body;
     const comentario = new Comentario({ comentarioInfo, calificacion, autor });
-    
+
     await comentario.save();
 
     res.status(200).json({
@@ -216,7 +217,7 @@ const comentarioCreatePostman = async (req, res = response) => {
 };
 
 const misClaseGet = async (req, res = response) => {
-    
+
     const { id } = req.params;
     const query = { profesorId: id }
     const { limit = 100, from = 0 } = req.query;
@@ -240,8 +241,8 @@ const misClaseGet = async (req, res = response) => {
 
         let cantCommentario = 0;
         let calificacionComentario = 0;
-        clase.commentId.forEach( comentario => {
-            if(comentario.statusComentario == true){
+        clase.commentId.forEach(comentario => {
+            if (comentario.statusComentario == true) {
                 calificacionComentario = calificacionComentario + comentario.calificacion;
                 cantCommentario++;
             }
@@ -250,19 +251,20 @@ const misClaseGet = async (req, res = response) => {
 
 
         return {
-        claseId: clase._id,
-        title: clase.title,
-        profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
-        category: clase.category,
-        tipoClase: clase.tipoClase,
-        frecuencia: clase.frecuencia,
-        duracion: clase.duracion,
-        calificacion: calificacionComentario / cantCommentario,
-        price: clase.price,
-        imgUrl: clase.imgUrl,
+            claseId: clase._id,
+            title: clase.title,
+            profesorName: `${clase.profesorId.name} ${clase.profesorId.lastName}`,
+            category: clase.category,
+            tipoClase: clase.tipoClase,
+            frecuencia: clase.frecuencia,
+            duracion: clase.duracion,
+            calificacion: calificacionComentario / cantCommentario,
+            price: clase.price,
+            imgUrl: clase.imgUrl,
 
 
-      }});
+        }
+    });
 
     res.json({
         total,
@@ -272,26 +274,45 @@ const misClaseGet = async (req, res = response) => {
 
 async function handleUpload(file) {
     const res = await cloudinary.uploader.upload(file, {
-      resource_type: "auto",
+        resource_type: "auto",
     });
     return res;
-  }
+}
 
 const uploadImage = async function (req, res, next) {
     try {
         // Upload Image
         console.log("Uploading profile image...")
-        console.log("body",req.body)
+        console.log("body", req.body)
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
         console.log("cldRes", cldRes)
-        let data = res.json(cldRes);       
+        let data = res.json(cldRes);
         return data;
-      } catch (e) {
+    } catch (e) {
         console.log(e.stack);
-        return res.status(400).json({status: 400, message: "Error while uploading."})
+        return res.status(400).json({ status: 400, message: "Error while uploading." })
     }
+}
+
+const listaComentariosGet = async (req, res = response) => {
+
+    const query = { calificacion: { $gte: 4.5 } }
+    const { limit = 100, from = 0 } = req.query;
+
+
+    const [total, comentariosData] = await Promise.all([
+        Comentario.countDocuments(query),
+        Comentario.find(query)
+            .skip(Number(from))
+            .limit(Number(limit))
+    ]);
+
+    res.json({
+        total,
+        comentariosData
+    });
 }
 
 
@@ -304,5 +325,6 @@ module.exports = {
     misClaseGet,
     comentarioUpdateParam,
     comentarioCreatePostman,
-    uploadImage
+    uploadImage,
+    listaComentariosGet
 }

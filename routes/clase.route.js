@@ -16,7 +16,8 @@ const { claseGet,
     claseContratadaGet,
     comentarioUpdateParam,
     uploadImage,
-    comentarioCreatePostman } = require('../controllers/clase.controllers');
+    comentarioCreatePostman,
+    listaComentariosGet } = require('../controllers/clase.controllers');
 
 const Multer = require("multer");
 const storage = new Multer.memoryStorage();
@@ -88,6 +89,8 @@ router.post('/create-comment', [
     check('autor', 'El autor es obligatorio').not().isEmpty(),
     validateFields
 ], comentarioCreatePostman);
+
+router.get('/lista-comentarios', listaComentariosGet);
 
 router.post('/image-upload', upload.single("my_img"), uploadImage)
 
