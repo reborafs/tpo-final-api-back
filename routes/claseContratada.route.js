@@ -15,8 +15,7 @@ const { claseContratadaGet,
         
 const router = Router();
 
-router.post('/ver-clase-contratada/contratar/:id', [
-
+router.post('/contratar/:id', [
     check('id', 'No es un ID válido').isMongoId(),
     check('telefono', 'El número de telefono es obligatorio').not().isEmpty(),
     check('mail', 'El mail es obligatorio').not().isEmpty(),
