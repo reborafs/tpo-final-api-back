@@ -219,7 +219,7 @@ const comentarioCreatePostman = async (req, res = response) => {
 const misClaseGet = async (req, res = response) => {
 
     const { id } = req.params;
-    const query = { profesorId: id }
+    const query = { profesorId: id, statusClase: true }
     const { limit = 100, from = 0 } = req.query;
 
     const [total, clasesData] = await Promise.all([
