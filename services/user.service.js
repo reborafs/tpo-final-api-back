@@ -89,6 +89,7 @@ exports.updateUser = async function (user) {
         console.log("User NOT found");
         return false;
     }
+    
     //Edit the User Object
     oldUser.name = user.name  ? user.name : oldUser.name;
     oldUser.lastName = user.lastName ? user.lastName : oldUser.lastName;
