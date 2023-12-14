@@ -125,7 +125,6 @@ const statusClaseContratadaUpdate = async (req, res = response) => {
     const { statusClaseContratada } = req.body;
 
     let response = await ClaseContratada.findByIdAndUpdate( id,  {statusAceptada: statusClaseContratada} );
-    console.log(response)
     // TODO manejo de error si no guarda el mongo
     return res.status(200).json({status: 200, ok: true, message: "STATUS NUEVO DE CLASE "});
 
