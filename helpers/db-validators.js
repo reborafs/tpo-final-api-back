@@ -1,5 +1,25 @@
 const Clase = require('../models/clase.model');
 const User = require('../models/user.model');
+var jwt = require('jsonwebtoken');
+
+const authorization = async (req, res, next) => {
+
+    var token = req.headers['x-access-token'];
+    console.log("token", token); 
+    var msg = {auth: false, message: 'No token provided.'};
+    if (!token)
+        res.status(500).send(msg);
+
+    let sec = process.env.SECRET;
+    //console.log("secret",sec)
+    jwt.verify(token, sec, async (err, decoded) => {
+        var msg = {auth: false, message: 'Failed to authenticate token.'};
+        if (err) res.status(500).send(msg);
+        console.log("decoded", decoded); 
+        await existsUserById(decoded.id);
+        next();
+    });
+}
 
 const isClaseValid = async (req) => {
 
@@ -37,6 +57,7 @@ const existsUserById = async (id = '') => {
 }
 
 module.exports = {
+    authorization,
     isClaseValid,
     existsClaseById,
     existsClaseByStatus,
