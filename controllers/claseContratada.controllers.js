@@ -4,7 +4,8 @@ const ClaseContratada = require('../models/claseContrtada.model');
 const Clase = require('../models/clase.model');
 const User = require('../models/user.model');
 const Comentario = require('../models/comentario.model');
-const transporter = require('../helpers/mailer');
+const sendMail = require('../helpers/mailer');
+
 
 
 const claseContratadaCreate = async (req, res = response) => {
@@ -14,13 +15,21 @@ const claseContratadaCreate = async (req, res = response) => {
     const { telefono, mail, horario, mensaje, nombreAlumno } = req.body;
 
     const claseContratada = new ClaseContratada({ claseId, profesorId, telefono, mail, horario, mensaje, nombreAlumno });
-
-    //Guardar en la BD
-    await claseContratada.save();
-
-    res.status(201).json({
-        msg: 'post API - Clase Contratada creada'
-    });
+    try {
+        //Guardar en la BD
+        let mongoResponse = await claseContratada.save();
+        console.log("Sending confirmation: ", mail);
+        let email = {
+            to: mail,
+            subject: "Clase contratada",
+            text: `Gracias por utilizar nuestros servicios. Dirigete hacia este link para visualizar tu clase: ${process.env.FRONTEND_URL}/ver-clase-contratada/${claseContratada._id}`, // plain text body
+            //html: "<b>Thank you!</b>",
+        }
+        let response = await sendMail(email);
+        return res.status(201).json({msg: 'post API - Clase Contratada creada'});
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 
@@ -57,6 +66,7 @@ const claseContratadaGet = async (req = request, res = response) => {
         claseContratada
     });
 }
+
 
 const getListaClaseContratada = async (req, res = response) => {
 
@@ -109,29 +119,15 @@ const getListaClaseContratada = async (req, res = response) => {
 };
 
 
-
-const sendMailAlumno = async (req = request, res = response) => {
-
-    let result = await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
-        to: 'francor.96@gmail.com',
-        subject: "CLASE CONTRATADA DE MUSICA",
-        text: "Hello world!", // plain text body
-        html: "<b>Hello world!</b>",
-
-    });
-
-    //console.log("result", { result });
-    res.status(200).json({ ok: true, message: "email sent." })
-
-}
-
 const statusClaseContratadaUpdate = async (req, res = response) => {
 
     const { id } = req.params;
     const { statusClaseContratada } = req.body;
 
-    await ClaseContratada.findByIdAndUpdate( id,  {statusAceptada: statusClaseContratada} );
+    let response = await ClaseContratada.findByIdAndUpdate( id,  {statusAceptada: statusClaseContratada} );
+    console.log(response)
+    // TODO manejo de error si no guarda el mongo
+    return res.status(200).json({status: 200, ok: true, message: "STATUS NUEVO DE CLASE "});
 
 };
 
@@ -139,6 +135,5 @@ module.exports = {
     claseContratadaCreate,
     claseContratadaGet,
     getListaClaseContratada,
-    sendMailAlumno,
     statusClaseContratadaUpdate
 }

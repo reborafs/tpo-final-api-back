@@ -21,8 +21,6 @@ router.post('/registration', UserController.createUser)
 router.post('/reset-password', UserController.resetPassword)
 router.post('/login/', UserController.loginUser)
 router.post('/image-upload',  upload.single("my_img"), UserController.uploadImage)
-router.get('/userByMail', Authorization, UserController.getUsersByMail)
-
 router.get('/userById/:id',  [
   check('id', 'No es un ID válido').isMongoId()
 ] , UserController.getUserById);

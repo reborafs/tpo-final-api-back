@@ -1,7 +1,7 @@
 const { response } = require('express');
 var UserService = require('../services/user.service');
 const cloudinary = require("cloudinary").v2;
-const transporter = require('../helpers/mailer');
+const sendMail = require('../helpers/mailer');
 
 //Config image server
 cloudinary.config({
@@ -29,22 +29,6 @@ const getUsers = async function (req, res, next) {
     }
 }
 
-const getUsersByMail = async function (req, res, next) {
-
-    // Check the existence of the query parameters, If doesn't exists assign a default value
-    var page = req.query.page ? req.query.page : 1
-    var limit = req.query.limit ? req.query.limit : 10;
-    let filtro= {email: req.body.email}
-    console.log(filtro)
-    try {
-        var Users = await UserService.getUsers(filtro, page, limit)
-        // Return the Users list with the appropriate HTTP password Code and Message.
-        return res.status(200).json({status: 200, data: Users, message: "Succesfully Users Recieved"});
-    } catch (e) {
-        //Return an Error Response Message with Code and the Error Message.
-        return res.status(400).json({status: 400, message: e.message});
-    }
-}
 
 const getUserById = async function (req, res, next) {
 
@@ -160,11 +144,9 @@ const uploadImage = async function (req, res, next) {
     try {
         // Upload Image
         console.log("Uploading profile image...")
-        console.log("body",req.body)
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
-        console.log("cldRes", cldRes)
         let data = res.json(cldRes);       
         return data;
       } catch (e) {
@@ -174,22 +156,6 @@ const uploadImage = async function (req, res, next) {
 }
 
 
-
-const sendResetPasswordMail = async (email) => {
-    console.log("INTENTO REQ MAIL")
-    let result = await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
-        to: email,
-        subject: "Recuperar Contraseña",
-        text: "Here's your link: localhost", // plain text body
-        html: "<b>Thank you!</b>",
-    });
-    console.log("result", { result });
-    // TODO: Manejo de error de mail service
-    return result;
-
-}
-
 const resetPassword = async function (req, res, next) {
     let page = req.query.page ? req.query.page : 1
     let limit = req.query.limit ? req.query.limit : 1;
@@ -198,14 +164,19 @@ const resetPassword = async function (req, res, next) {
     console.log(limit)
     console.log(filtro)
     try {
-        console.log("getUsersByMail")
-        let response = await UserService.getUsers(filtro, page, limit)
-        console.log("getUsersByMail END")
-        if (response.total == 0) {
+        let users = await UserService.getUsers(filtro, page, limit)
+        if (users.total == 0) {
             return res.status(400).json({status: 400, message: "No existe usuario con el mail "+ req.body.email});
         } else {
             console.log("Recovering password: ", req.body.email);
-            let response = await sendResetPasswordMail(req.body.email);
+            console.log("Recovering user: ", users.docs);
+            let user = users.docs[0]
+            let email = {
+                to: req.body.email,
+                subject: "Recuperar Contraseña",
+                text: `Aqui tienes tu link para recuperar tu contraseña: ${process.env.FRONTEND_URL}/recuperar/${user._id}`, // plain text body
+            }
+            let response = await sendMail(email);
             return res.status(200).json({status: 200, ok: true, message: "Reinicio de contraseña enviado a "+ req.body.email});
         }
     } catch (e) {
@@ -216,7 +187,6 @@ const resetPassword = async function (req, res, next) {
 
 module.exports = {
     getUsers,
-    getUsersByMail,
     getUserById,
     createUser,
     updateUser,

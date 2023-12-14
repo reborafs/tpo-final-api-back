@@ -12,6 +12,7 @@ const transporter = nodemailer.createTransport({
   });
 */
 
+
 // DEV TEST
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -24,4 +25,16 @@ const transporter = nodemailer.createTransport({
 });
 
 
-module.exports = transporter;
+
+const sendMail = async (email) => {
+  let result = await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: email.to,
+      subject: email.subject,
+      text: email.text, 
+      html: email.html,
+  });
+  return result;
+}
+
+module.exports = sendMail;
