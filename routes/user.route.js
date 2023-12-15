@@ -19,9 +19,8 @@ router.get('/userById/:id',  [
 ] , UserController.getUserById);
 
 // Add Authorization
-//router.put('/update', Authorization, UserController.updateUser)
 router.put('/update', [
-  authorization,
+//  authorization,
   check('id').custom( existsUserById ),
 ], UserController.updateUser);
 router.delete('/delete',  UserController.removeUser)
