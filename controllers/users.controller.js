@@ -43,6 +43,7 @@ const getUserById = async function (req, res, next) {
 
 const createUser = async function (req, res, next) {
     // Req.Body contains the form submit values.
+    console.log("Creando usuario... ", req.body.email)
     var User = {
         name: req.body.name,
         lastName: req.body.lastName,
@@ -84,7 +85,7 @@ const updateUser = async function (req, res, next) {
         telefono: req.body.telefono ? req.body.telefono : null,
         bio: req.body.bio ? req.body.bio : null,
     }
-    console.log("User to Update: ", User);
+    console.log("Updating user... ", User);
 
     try {
         var updatedUser = await UserService.updateUser(User)
@@ -109,7 +110,6 @@ const removeUser = async function (req, res, next) {
 
 const loginUser = async function (req, res, next) {
     // Req.Body contains the form submit values.
-    console.log("body",req.body)
     var User = {
         email: req.body.email,
         password: req.body.password
@@ -160,8 +160,7 @@ const resetPassword = async function (req, res, next) {
         if (users.total == 0) {
             return res.status(400).json({status: 400, message: "No existe usuario con el mail "+ req.body.email});
         } else {
-            console.log("Recovering password: ", req.body.email);
-            console.log("Recovering user: ", users.docs);
+            console.log("Recovering password... ", req.body.email);
             let user = users.docs[0]
             let email = {
                 to: req.body.email,

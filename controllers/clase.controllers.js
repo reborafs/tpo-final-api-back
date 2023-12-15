@@ -286,7 +286,8 @@ async function handleUpload(file) {
 
 const uploadImage = async function (req, res, next) {
     try {
-
+        // Upload Image
+        console.log("Uploading profile image...")
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);

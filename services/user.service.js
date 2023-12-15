@@ -16,7 +16,6 @@ exports.getUsers = async function (query, page, limit) {
     }
     // Try Catch the awaited promise to handle the error 
     try {
-        console.log("Query",query)
         var Users = await User.paginate(query, options)
         // Return the Userd list that was retured by the mongoose promise
         return Users;
@@ -30,11 +29,10 @@ exports.getUsers = async function (query, page, limit) {
 
 // Async function to get the User List
 exports.getUserById = async function (id) {
-    console.log("ID TO BE FOUND: ", id)
+    console.log("User ID to be found: ", id)
     try {
         //Find the old User Object by the Id
         var foundUser = await User.findById(id);
-        console.log (foundUser);
         return foundUser;
     } catch (e) {
         throw Error("Error occured while finding the User")
@@ -78,22 +76,21 @@ exports.createUser = async function (user) {
 exports.updateUser = async function (user) {
     
     var id = user._id
-    console.log(id)
     try {
         //Find the old User Object by the Id
         var oldUser = await User.findById(id);
-        console.log ("Found User: ", oldUser);
+        console.log("Found User: ", oldUser._id);
     } catch (e) {
         console.error(e);
         throw Error("Error occured while Finding the User");
     }
     // If no old User Object exists return false
     if (!oldUser) {
-        console.log("user not found");
+        console.log("User NOT found");
         return false;
     }
+    
     //Edit the User Object
-    console.log("Old user: ", oldUser);
     oldUser.name = user.name  ? user.name : oldUser.name;
     oldUser.lastName = user.lastName ? user.lastName : oldUser.lastName;
     oldUser.email = user.email ? user.email : oldUser.email;
@@ -103,7 +100,6 @@ exports.updateUser = async function (user) {
     oldUser.imgUrl = user.imgUrl ? user.imgUrl : oldUser.imgUrl;
     oldUser.telefono = user.telefono ? user.telefono : oldUser.telefono;
     oldUser.bio = user.bio ? user.bio : oldUser.bio;
-    console.log("New user: ", oldUser);
     try {
         var savedUser = await oldUser.save()
         return savedUser;
@@ -114,7 +110,7 @@ exports.updateUser = async function (user) {
 }
 
 exports.deleteUser = async function (id) {
-    console.log(id)
+    console.log("Deleting User... ", id)
     // Delete the User
     try {
         var deleted = await User.remove({
@@ -135,7 +131,7 @@ exports.loginUser = async function (user) {
     // Creating a new Mongoose Object by using the new keyword
     try {
         // Find the User 
-        console.log("login:",user)
+        console.log("Login user...", user.email)
         var _details = await User.findOne({
             email: user.email
         });
