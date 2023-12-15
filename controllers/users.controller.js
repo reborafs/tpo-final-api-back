@@ -31,7 +31,6 @@ const getUsers = async function (req, res, next) {
 
 
 const getUserById = async function (req, res, next) {
-
     // Check the existence of the query parameters, If doesn't exists assign a default value
     const { id } = req.params;
     try {
