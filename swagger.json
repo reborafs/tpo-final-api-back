@@ -820,6 +820,42 @@
           }
         }
       },
+      "/clase-contratada/clases-contratada-status-completada/{id}": {
+        "put": {
+          "tags": [
+            "Clases contratadas"
+          ],
+          "summary": "Actualizar el estado de una clase contratada",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase contratada a actualizar",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos actualizados del estado de la clase contratada",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "statusCompletada": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Clase contratada completada exitosamente"
+            }
+          }
+        }
+      },
       "/users/registration": {
         "post": {
           "tags": [
