@@ -131,9 +131,21 @@ const statusClaseContratadaUpdate = async (req, res = response) => {
 
 };
 
+const statusClaseContratadaCompletadaUpdate = async (req, res = response) => {
+
+    const { id } = req.params;
+    const { statusCompletada } = req.body;
+
+    let response = await ClaseContratada.findByIdAndUpdate( id,  {statusCompletada: statusCompletada} );
+    // TODO manejo de error si no guarda el mongo
+    return res.status(200).json({status: 200, ok: true, message: "STATUS NUEVO DE CLASE "});
+
+};
+
 module.exports = {
     claseContratadaCreate,
     claseContratadaGet,
     getListaClaseContratada,
-    statusClaseContratadaUpdate
+    statusClaseContratadaUpdate,
+    statusClaseContratadaCompletadaUpdate
 }
