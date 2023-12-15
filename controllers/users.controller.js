@@ -157,14 +157,10 @@ const uploadImage = async function (req, res, next) {
 
 
 const resetPassword = async function (req, res, next) {
-    let page = req.query.page ? req.query.page : 1
-    let limit = req.query.limit ? req.query.limit : 1;
     let filtro = {email: req.body.email};
-    console.log(page)
-    console.log(limit)
-    console.log(filtro)
+
     try {
-        let users = await UserService.getUsers(filtro, page, limit)
+        let users = await UserService.getUsers(filtro, 1, 1)
         if (users.total == 0) {
             return res.status(400).json({status: 400, message: "No existe usuario con el mail "+ req.body.email});
         } else {

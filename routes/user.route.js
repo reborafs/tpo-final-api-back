@@ -11,12 +11,6 @@ const upload = Multer({
   storage,
 });
 
-// Authorize each API with middleware and map to the Controller Functions
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send('Llegaste a la ruta de  api/user.routes');
-});
-
 router.post('/registration', UserController.createUser)
 router.post('/reset-password', UserController.resetPassword)
 router.post('/login/', UserController.loginUser)

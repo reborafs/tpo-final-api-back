@@ -1,352 +1,1306 @@
 {
-	"openapi": "3.0.0",
-	"info": {
-	  "title": "ProfExpres API Documentation",
-	  "version": "1.0.0"
-	},
-	"paths": {
-	  "/api/clases/ver-clase/{id}": {
-		"get": {
-		  "summary": "Get class by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "Class ID"
-			}
-		  ],
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/catalogo": {
-		"get": {
-		  "summary": "Get list of classes",
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/crear-clase": {
-		"post": {
-		  "summary": "Create a new class",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "title": "New Class",
-				  "profesorId": "123",
-				  "category": "Science",
-				  "tipoClase": "Online",
-				  "frecuencia": "Weekly",
-				  "duracion": "1 hour",
-				  "description": "Description of the class",
-				  "price": 20.99
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/actualizar-clase/{id}": {
-		"put": {
-		  "summary": "Update class by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "Class ID"
-			}
-		  ],
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "title": "Updated Class",
-				  "category": "Math",
-				  "tipoClase": "In-person",
-				  "frecuencia": "Daily",
-				  "duracion": "2 hours",
-				  "description": "Updated description",
-				  "price": 25.99,
-				  "imgUrl": "https://example.com/image.jpg"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/borrar-clase/{id}": {
-		"delete": {
-		  "summary": "Delete class by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "Class ID"
-			}
-		  ],
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/mis-clases/{id}": {
-		"get": {
-		  "summary": "Get user's classes by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "User ID"
-			}
-		  ],
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/actualizar-comment/{id}": {
-		"put": {
-		  "summary": "Update comment by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "Comment ID"
-			}
-		  ],
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "statusComentario": "approved"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/create-comment": {
-		"post": {
-		  "summary": "Create a new comment",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "comentarioInfo": "Great class!",
-				  "calificacion": 5,
-				  "autor": "John Doe"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases/image-upload": {
-		"post": {
-		  "summary": "Upload image",
-		  "requestBody": {
-			"content": {
-			  "multipart/form-data": {
-				"schema": {
-				  "type": "object",
-				  "properties": {
-					"my_img": {
-					  "type": "string",
-					  "format": "binary"
-					}
-				  }
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases-contratadas/ver-clase-contratada/contratar/{id}": {
-		"post": {
-		  "summary": "Contract a class",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "Class ID"
-			}
-		  ],
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "telefono": "123456789",
-				  "mail": "example@email.com",
-				  "horario": "Monday 10:00 AM",
-				  "mensaje": "I want to join this class!",
-				  "nombreAlumno": "John Doe"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/clases-contratadas/send-mail": {
-		"post": {
-		  "summary": "Send mail to alumno",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "email": "example@email.com"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/users/": {
-		"get": {
-		  "summary": "Get all users",
-		  "responses": {}
-		}
-	  },
-	  "/api/users/registration": {
-		"post": {
-		  "summary": "Register a new user",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "username": "john_doe",
-				  "email": "john@example.com",
-				  "password": "securePassword"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/users/login/": {
-		"post": {
-		  "summary": "User login",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "email": "john@example.com",
-				  "password": "securePassword"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/users/image-upload": {
-		"post": {
-		  "summary": "Upload user image",
-		  "requestBody": {
-			"content": {
-			  "multipart/form-data": {
-				"schema": {
-				  "type": "object",
-				  "properties": {
-					"my_img": {
-					  "type": "string",
-					  "format": "binary"
-					}
-				  }
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/users/users": {
-		"get": {
-		  "summary": "Get all users",
-		  "responses": {}
-		}
-	  },
-	  "/api/users/userByMail": {
-		"get": {
-		  "summary": "Get users by mail",
-		  "responses": {}
-		}
-	  },
-	  "/api/users/userById/{id}": {
-		"get": {
-		  "summary": "Get user by ID",
-		  "parameters": [
-			{
-			  "name": "id",
-			  "in": "path",
-			  "required": true,
-			  "schema": {
-				"type": "string"
-			  },
-			  "description": "User ID"
-			}
-		  ],
-		  "responses": {}
-		}
-	  },
-	  "/api/users/update": {
-		"put": {
-		  "summary": "Update user",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "id": "123",
-				  "username": "updated_user",
-				  "email": "updated@example.com"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  },
-	  "/api/users/delete": {
-		"delete": {
-		  "summary": "Delete user",
-		  "requestBody": {
-			"content": {
-			  "application/json": {
-				"example": {
-				  "id": "123"
-				}
-			  }
-			}
-		  },
-		  "responses": {}
-		}
-	  }
-	}
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "API de Clases",
+      "description": "Documentación de la API para gestionar clases y comentarios"
+    },
+    "tags": [
+      {
+        "name": "Clases",
+        "description": "Endpoints relacionados a clases"
+      },
+      {
+        "name": "Users",
+        "description": "Endpoints relacionados a usuarios"
+      },
+      {
+        "name": "Clases contratadas",
+        "description": "Endpoints relacionados a clases contratadas"
+      },
+      {
+        "name": "Comentarios",
+        "description": "Endpoints relacionados a comentarios"
+      },
+      {
+        "name": "Imagenes",
+        "description": "Endpoints relacionados a subida de imagenes"
+      }
+    ],
+    "basePath": "/api",
+    "paths": {
+      "/clase/ver-clase/{id}": {
+        "get": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Obtiene los detalles de una clase",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clase": {
+                    "type": "object",
+                    "properties": {
+                      "claseId": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "statusClase": {
+                        "type": "boolean"
+                      },
+                      "category": {
+                        "type": "string"
+                      },
+                      "tipoClase": {
+                        "type": "string"
+                      },
+                      "frecuencia": {
+                        "type": "string"
+                      },
+                      "duracion": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "price": {
+                        "type": "number"
+                      },
+                      "imgUrl": {
+                        "type": "string"
+                      },
+                      "profesor": {
+                        "type": "object",
+                        "properties": {
+                          "profesorId": {
+                            "type": "string"
+                          },
+                          "profesorName": {
+                            "type": "string"
+                          },
+                          "profesorExp": {
+                            "type": "string"
+                          },
+                          "profesorBio": {
+                            "type": "string"
+                          },
+                          "profesorTitulo": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "comments": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "statusComentario": {
+                              "type": "boolean"
+                            },
+                            "commentId": {
+                              "type": "string"
+                            },
+                            "comentarioInfo": {
+                              "type": "string"
+                            },
+                            "calificacion": {
+                              "type": "number"
+                            },
+                            "autor": {
+                              "type": "string"
+                            },
+                            "createDate": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "calificacion": {
+                        "type": "object",
+                        "properties": {
+                          "calificacion": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase/catalogo": {
+        "get": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Obtiene el catálogo de clases",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "limit",
+              "description": "Cantidad máxima de resultados a devolver",
+              "type": "integer"
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "description": "Número de resultados a omitir al inicio",
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer"
+                  },
+                  "clases": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "claseId": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "profesorName": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "tipoClase": {
+                          "type": "string"
+                        },
+                        "frecuencia": {
+                          "type": "string"
+                        },
+                        "duracion": {
+                          "type": "string"
+                        },
+                        "calificacion": {
+                          "type": "number"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "imgUrl": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase/crear-clase": {
+        "post": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Crea una nueva clase",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de la nueva clase",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "profesorId": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "tipoClase": {
+                    "type": "string"
+                  },
+                  "frecuencia": {
+                    "type": "string"
+                  },
+                  "duracion": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "imgUrl": {
+                    "type": "string"
+                  },
+                  "commentId": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Clase creada exitosamente"
+            }
+          }
+        }
+      },
+      "/clase/actualizar-clase/{id}": {
+        "put": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Actualiza una clase existente",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase a actualizar",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos actualizados de la clase",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "profesorId": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "tipoClase": {
+                    "type": "string"
+                  },
+                  "frecuencia": {
+                    "type": "string"
+                  },
+                  "duracion": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "imgUrl": {
+                    "type": "string"
+                  },
+                  "comments": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "comentarioInfo": {
+                          "type": "string"
+                        },
+                        "calificacion": {
+                          "type": "number"
+                        },
+                        "autor": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Clase actualizada exitosamente"
+            }
+          }
+        }
+      },
+      "/clase/borrar-clase/{id}": {
+        "delete": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Elimina una clase",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase a eliminar",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Clase eliminada exitosamente"
+            }
+          }
+        }
+      },
+      "/clase/mis-clases/{id}": {
+        "get": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Obtiene las clases de un profesor",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID del profesor",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "limit",
+              "description": "Cantidad máxima de resultados a devolver",
+              "type": "integer"
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "description": "Número de resultados a omitir al inicio",
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer"
+                  },
+                  "clases": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "claseId": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "profesorName": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "tipoClase": {
+                          "type": "string"
+                        },
+                        "frecuencia": {
+                          "type": "string"
+                        },
+                        "duracion": {
+                          "type": "string"
+                        },
+                        "calificacion": {
+                          "type": "number"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "imgUrl": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase/actualizar-comment/{id}": {
+        "put": {
+          "tags": [
+            "Comentarios"
+          ],
+          "summary": "Actualiza el estado de un comentario",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID del comentario a actualizar",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos actualizados del comentario",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "statusComentario": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Comentario actualizado exitosamente"
+            }
+          }
+        }
+      },
+      "/clase/create-comment": {
+        "post": {
+          "tags": [
+            "Comentarios"
+          ],
+          "summary": "Crea un nuevo comentario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos del nuevo comentario",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comentarioInfo": {
+                    "type": "string"
+                  },
+                  "calificacion": {
+                    "type": "number"
+                  },
+                  "autor": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Comentario creado exitosamente"
+            }
+          }
+        }
+      },
+      "/clase/lista-comentarios": {
+        "get": {
+          "tags": [
+            "Clases"
+          ],
+          "summary": "Obtiene la lista de comentarios con calificación mayor o igual a 4.5",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "limit",
+              "description": "Cantidad máxima de resultados a devolver",
+              "type": "integer"
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "description": "Número de resultados a omitir al inicio",
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer"
+                  },
+                  "comentariosData": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "comentarioInfo": {
+                          "type": "string"
+                        },
+                        "calificacion": {
+                          "type": "number"
+                        },
+                        "statusComentario": {
+                          "type": "boolean"
+                        },
+                        "autor": {
+                          "type": "string"
+                        },
+                        "createDate": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase/image-upload": {
+        "post": {
+          "tags": [
+            "Imagenes"
+          ],
+          "summary": "Sube una imagen",
+          "consumes": [
+            "multipart/form-data"
+          ],
+          "parameters": [
+            {
+              "in": "formData",
+              "name": "my_img",
+              "type": "file",
+              "description": "Archivo de imagen"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase-contratada/contratar/{id}": {
+        "post": {
+          "tags": [
+            "Clases contratadas"
+          ],
+          "summary": "Contratar una clase",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase a contratar",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de la clase contratada",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "telefono": {
+                    "type": "string"
+                  },
+                  "mail": {
+                    "type": "string"
+                  },
+                  "horario": {
+                    "type": "string"
+                  },
+                  "mensaje": {
+                    "type": "string"
+                  },
+                  "nombreAlumno": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Clase contratada exitosamente"
+            },
+            "400": {
+              "description": "Error al contratar la clase"
+            }
+          }
+        }
+      },
+      "/clase-contratada/ver-clase-contratada/{id}": {
+        "get": {
+          "tags": [
+            "Clases contratadas"
+          ],
+          "summary": "Obtener detalles de una clase contratada",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase contratada",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "claseContratadaId": {
+                    "type": "string"
+                  },
+                  "claseId": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "statusCompletada": {
+                    "type": "boolean"
+                  },
+                  "statusAceptada": {
+                    "type": "boolean"
+                  },
+                  "telefono": {
+                    "type": "string"
+                  },
+                  "mail": {
+                    "type": "string"
+                  },
+                  "horario": {
+                    "type": "string"
+                  },
+                  "mensaje": {
+                    "type": "string"
+                  },
+                  "imgUrl": {
+                    "type": "string"
+                  },
+                  "nombreAlumno": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase-contratada/lista-clases-contratada/{id}": {
+        "get": {
+          "tags": [
+            "Clases contratadas"
+          ],
+          "summary": "Obtener la lista de clases contratadas de un profesor",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID del profesor",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "limit",
+              "description": "Cantidad máxima de resultados a devolver",
+              "type": "integer"
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "description": "Número de resultados a omitir al inicio",
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer"
+                  },
+                  "claseContratadas": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "claseContratadaId": {
+                          "type": "string"
+                        },
+                        "claseId": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "statusCompletada": {
+                          "type": "boolean"
+                        },
+                        "statusAceptada": {
+                          "type": "boolean"
+                        },
+                        "telefono": {
+                          "type": "string"
+                        },
+                        "mail": {
+                          "type": "string"
+                        },
+                        "horario": {
+                          "type": "string"
+                        },
+                        "mensaje": {
+                          "type": "string"
+                        },
+                        "imgUrl": {
+                          "type": "string"
+                        },
+                        "nombreAlumno": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/clase-contratada/lista-clases-contratada-status/{id}": {
+        "put": {
+          "tags": [
+            "Clases contratadas"
+          ],
+          "summary": "Actualizar el estado de una clase contratada",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "ID de la clase contratada a actualizar",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos actualizados del estado de la clase contratada",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "statusClaseContratada": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Clase contratada actualizada exitosamente"
+            }
+          }
+        }
+      },
+      "/users/registration": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Registrar un nuevo usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de un nuevo usuario",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "titulo": {
+                    "type": "string"
+                  },
+                  "exp": {
+                    "type": "number"
+                  },
+                  "imgUrl": {
+                    "type": "string"
+                  },
+                  "telefono": {
+                    "type": "number"
+                  },
+                  "bio": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Usuario registrado exitosamente"
+            }
+          }
+        }
+      },
+      "/users/reset-password": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Restablecer la contraseña del usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de la nueva clase",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                    }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Reinicio de contraseña enviado a {email}"
+            },
+            "400": {
+              "description": "No existe usuario con el correo proporcionado"
+            }
+          }
+        }
+      },
+      "/users/login/": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Iniciar sesión de usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de la nueva clase",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                    },
+                  "password": {
+                    "type": "string"
+                    }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Inicio de sesión exitoso"
+            },
+            "401": {
+              "description": "Credenciales inválidas"
+            }
+          }
+        }
+      },
+      "/users/image-upload": {
+        "post": {
+          "tags": [
+            "Imagenes"
+          ],
+          "description": "Subir una imagen de perfil del usuario",
+          "parameters": [
+            {
+              "name": "my_img",
+              "in": "formData",
+              "description": "Archivo de imagen a subir",
+              "required": true,
+              "type": "file"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa"
+            },
+            "400": {
+              "description": "Error al cargar la imagen"
+            }
+          }
+        }
+      },
+      "/users/userById/{id}": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Obtener información de un usuario por ID",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "in": "path",
+              "description": "ID del usuario",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa"
+            },
+            "400": {
+              "description": "ID no válido"
+            }
+          }
+        }
+      },
+      "/users/update": {
+        "put": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Actualizar la información del usuario",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Datos de la nueva clase",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                    },
+                  "name": {
+                    "type": "string"
+                    },
+                  "lastName": {
+                    "type": "string"
+                    },
+                  "email": {
+                    "type": "string"
+                    },
+                  "password": {
+                    "type": "string"
+                    },
+                  "titulo": {
+                    "type": "string"
+                    },
+                  "exp": {
+                    "type": "number"
+                    },
+                  "imgUrl": {
+                    "type": "string"
+                    },
+                  "telefono": {
+                    "type": "number"
+                    },
+                  "bio": {
+                    "type": "string"
+                    }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa"
+            },
+            "400": {
+              "description": "Error en la solicitud"
+            }
+          }
+        }
+      },
+      "/users/delete": {
+        "delete": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Eliminar un usuario",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "in": "formData",
+              "description": "ID del usuario a eliminar",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa"
+            },
+            "400": {
+              "description": "Error en la solicitud"
+            }
+          }
+        }
+      },
+      "/users/users": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Obtener la lista de todos los usuarios",
+          "responses": {
+            "200": {
+              "description": "Operación exitosa"
+            },
+            "400": {
+              "description": "Error en la solicitud"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Clase": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "profesorId": {
+            "type": "string"
+          },
+          "statusClase": {
+            "type": "boolean"
+          },
+          "category": {
+            "type": "string"
+          },
+          "tipoClase": {
+            "type": "string"
+          },
+          "frecuencia": {
+            "type": "string"
+          },
+          "duracion": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "imgUrl": {
+            "type": "string"
+          },
+          "commentId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Comentario": {
+        "type": "object",
+        "properties": {
+          "comentarioInfo": {
+            "type": "string"
+          },
+          "calificacion": {
+            "type": "number"
+          },
+          "statusComentario": {
+            "type": "boolean"
+          },
+          "autor": {
+            "type": "string"
+          },
+          "createDate": {
+            "type": "string"
+          }
+        }
+      },
+      "ContratarClaseRequest": {
+        "type": "object",
+        "properties": {
+          "telefono": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "horario": {
+            "type": "string"
+          },
+          "mensaje": {
+            "type": "string"
+          },
+          "nombreAlumno": {
+            "type": "string"
+          }
+        }
+      },
+      "VerClaseContratadaResponse": {
+        "type": "object",
+        "properties": {
+          "claseContratadaId": {
+            "type": "string"
+          },
+          "claseId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "statusCompletada": {
+            "type": "boolean"
+          },
+          "statusAceptada": {
+            "type": "boolean"
+          },
+          "telefono": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "horario": {
+            "type": "string"
+          },
+          "mensaje": {
+            "type": "string"
+          },
+          "imgUrl": {
+            "type": "string"
+          },
+          "nombreAlumno": {
+            "type": "string"
+          }
+        }
+      },
+      "ListaClasesContratadasResponse": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "claseContratadas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/VerClaseContratadaResponse"
+            }
+          }
+        }
+      },
+      "ActualizarEstadoClaseRequest": {
+        "type": "object",
+        "properties": {
+          "statusClaseContratada": {
+            "type": "boolean"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "exp": {
+            "type": "integer"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "imgUrl": {
+            "type": "string"
+          },
+          "telefono": {
+            "type": "integer"
+          },
+          "bio": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
-  
