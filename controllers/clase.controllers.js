@@ -60,6 +60,7 @@ const claseGet = async (req = request, res = response) => {
 
     const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, duracion, description, price, imgUrl, ...profesor, comments, ...calificacion }
 
+    console.log('clase --->',clase);
 
     res.json({
         clase
