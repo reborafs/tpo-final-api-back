@@ -40,6 +40,10 @@ const claseContratadaGet = async (req = request, res = response) => {
             .populate({
                 path: 'claseId',
                 select: '_id title imgUrl'
+            })
+            .populate({
+                path: 'commentId',
+                select: 'calificacion comentarioInfo'
             });
 
     
@@ -58,9 +62,10 @@ const claseContratadaGet = async (req = request, res = response) => {
         mensaje: claseData.mensaje,
         imgUrl: claseId.imgUrl,
         nombreAlumno: claseData.nombreAlumno,
+        commentId: claseData.commentId? claseData.commentId: null,
+        calificacion: claseData.commentId?.calificacion? claseData.commentId.calificacion : null,
+        comentarioInfo: claseData.commentId?.comentarioInfo? claseData.commentId.comentarioInfo : null
     }
-
-
 
     res.json({
         claseContratada
@@ -87,8 +92,6 @@ const getListaClaseContratada = async (req, res = response) => {
 
     const { name, lastName} = await User.findById(id);
 
-    //console.log('clasesData',clasesData);
-
     const claseContratadas = clasesData.map(clase => {
 
         return {
@@ -109,8 +112,6 @@ const getListaClaseContratada = async (req, res = response) => {
             horario: clase.horario,
             mensaje: clase.mensaje,
           }});
-
-          //console.log('clasesData',clasesData);
 
     res.json({
         total,

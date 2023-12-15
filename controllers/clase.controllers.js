@@ -60,8 +60,6 @@ const claseGet = async (req = request, res = response) => {
 
     const clase = { ...claseId, title, statusClase, category, tipoClase, frecuencia, duracion, description, price, imgUrl, ...profesor, comments, ...calificacion }
 
-    console.log('clase --->',clase);
-
     res.json({
         clase
     });
@@ -147,7 +145,7 @@ const claseUpdate = async (req, res = response) => {
         if (comment.id) {
             await comentarioUpdate(comment);
         } else {
-            const commentNewId = await comentarioCreate(comment);
+            const commentNewId = await comentarioCreateClase(comment);
             nuevosIdsDeComentarios.push(commentNewId);
         }
     }));
@@ -172,7 +170,7 @@ const claseDelete = async (req, res = response) => {
     });
 }
 
-const comentarioCreate = async (comment) => {
+const comentarioCreateClase = async (comment) => {
 
     const { comentarioInfo, calificacion, autor } = comment;
     const comentario = new Comentario({ comentarioInfo, calificacion, autor });
@@ -204,12 +202,18 @@ const comentarioUpdateParam = async (req, res = response) => {
 
 };
 
-const comentarioCreatePostman = async (req, res = response) => {
+const comentarioCreate = async (req, res = response) => {
 
-    const { comentarioInfo, calificacion, autor } = req.body;
+    const { claseId, claseContratadaId, comentarioInfo, calificacion, autor } = req.body;
     const comentario = new Comentario({ comentarioInfo, calificacion, autor });
 
-    await comentario.save();
+    const newComment = await comentario.save();
+
+    const newCommentId = newComment._id;
+
+    await Clase.findByIdAndUpdate(claseId, { $push: { commentId: newCommentId } });
+
+    await ClaseContratada.findByIdAndUpdate(claseContratadaId, { commentId: newCommentId });
 
     res.status(200).json({
         msg: 'crear API - Comentario creado'
@@ -323,7 +327,7 @@ module.exports = {
     claseDelete,
     misClaseGet,
     comentarioUpdateParam,
-    comentarioCreatePostman,
+    comentarioCreate,
     uploadImage,
     listaComentariosGet
 }

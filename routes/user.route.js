@@ -24,7 +24,7 @@ router.put('/update', [
   authorization,
   check('id').custom( existsUserById ),
 ], UserController.updateUser);
-router.delete('/delete',  authorization, UserController.removeUser)
+router.delete('/delete',  UserController.removeUser)
 router.get('/users', UserController.getUsers)
 
 

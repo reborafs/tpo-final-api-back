@@ -39,6 +39,11 @@ const ClaseContratadaSchema = Schema({
     nombreAlumno: {
         type: String,
         required: [true, 'El nombre del alumno es obligatorio']
+    },
+    commentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comentario',
+        default: null
     }
 })
 

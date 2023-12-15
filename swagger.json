@@ -21,10 +21,6 @@
       {
         "name": "Comentarios",
         "description": "Endpoints relacionados a comentarios"
-      },
-      {
-        "name": "Imagenes",
-        "description": "Endpoints relacionados a subida de imagenes"
       }
     ],
     "basePath": "/api",
@@ -510,6 +506,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "claseId": {
+                    "type": "string"
+                  },
+                  "claseContratadaId": {
+                    "type": "string"
+                  },
                   "comentarioInfo": {
                     "type": "string"
                   },
@@ -581,41 +583,6 @@
                         }
                       }
                     }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/clase/image-upload": {
-        "post": {
-          "tags": [
-            "Imagenes"
-          ],
-          "summary": "Sube una imagen",
-          "consumes": [
-            "multipart/form-data"
-          ],
-          "parameters": [
-            {
-              "in": "formData",
-              "name": "my_img",
-              "type": "file",
-              "description": "Archivo de imagen"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "integer"
-                  },
-                  "message": {
-                    "type": "string"
                   }
                 }
               }
@@ -973,31 +940,6 @@
           }
         }
       },
-      "/users/image-upload": {
-        "post": {
-          "tags": [
-            "Imagenes"
-          ],
-          "description": "Subir una imagen de perfil del usuario",
-          "parameters": [
-            {
-              "name": "my_img",
-              "in": "formData",
-              "description": "Archivo de imagen a subir",
-              "required": true,
-              "type": "file"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Operación exitosa"
-            },
-            "400": {
-              "description": "Error al cargar la imagen"
-            }
-          }
-        }
-      },
       "/users/userById/{id}": {
         "get": {
           "tags": [
@@ -1070,31 +1012,6 @@
                     }
                 }
               }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Operación exitosa"
-            },
-            "400": {
-              "description": "Error en la solicitud"
-            }
-          }
-        }
-      },
-      "/users/delete": {
-        "delete": {
-          "tags": [
-            "Users"
-          ],
-          "description": "Eliminar un usuario",
-          "parameters": [
-            {
-              "name": "id",
-              "type": "string",
-              "in": "formData",
-              "description": "ID del usuario a eliminar",
-              "required": true
             }
           ],
           "responses": {
@@ -1186,7 +1103,7 @@
           }
         }
       },
-      "ContratarClaseRequest": {
+      "Contratar Clase Response": {
         "type": "object",
         "properties": {
           "telefono": {
@@ -1206,7 +1123,7 @@
           }
         }
       },
-      "VerClaseContratadaResponse": {
+      "Ver Clase Contratada Response": {
         "type": "object",
         "properties": {
           "claseContratadaId": {
@@ -1244,7 +1161,7 @@
           }
         }
       },
-      "ListaClasesContratadasResponse": {
+      "ListaC lases Contratadas Response": {
         "type": "object",
         "properties": {
           "total": {
@@ -1258,7 +1175,7 @@
           }
         }
       },
-      "ActualizarEstadoClaseRequest": {
+      "Actualizar Estado Clase Request": {
         "type": "object",
         "properties": {
           "statusClaseContratada": {
