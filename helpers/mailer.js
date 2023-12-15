@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-/*
+
 
 // LIMITE DE 100 MAILS POR DIA.
 const transporter = nodemailer.createTransport({
@@ -11,9 +11,9 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SENDGRID_API_KEY,
   },
 });
-*/
 
 
+/*
 // DEV TEST
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.ETHEREAL_EMAIL_PASSWORD,
   },
 });
-
+*/
 
 const sendMail = async (email) => {
   let result = await transporter.sendMail({
