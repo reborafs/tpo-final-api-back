@@ -28,7 +28,6 @@ const getUsers = async function (req, res, next) {
 
 
 const getUserById = async function (req, res, next) {
-
     // Check the existence of the query parameters, If doesn't exists assign a default value
     const { id } = req.params;
     try {
@@ -85,7 +84,6 @@ const updateUser = async function (req, res, next) {
         telefono: req.body.telefono ? req.body.telefono : null,
         bio: req.body.bio ? req.body.bio : null,
     }
-    console.log("Updating user... ", User);
 
     try {
         var updatedUser = await UserService.updateUser(User)

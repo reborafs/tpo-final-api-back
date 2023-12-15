@@ -15,7 +15,6 @@ router.post('/reset-password', UserController.resetPassword)
 router.post('/login/', UserController.loginUser)
 router.post('/image-upload', authorization, upload.single("my_img"), UserController.uploadImage)
 router.get('/userById/:id',  [
-  authorization,
   check('id', 'No es un ID válido').isMongoId()
 ] , UserController.getUserById);
 
