@@ -40,6 +40,10 @@ const claseContratadaGet = async (req = request, res = response) => {
             .populate({
                 path: 'claseId',
                 select: '_id title imgUrl'
+            })
+            .populate({
+                path: 'commentId',
+                select: 'calificacion comentarioInfo'
             });
 
     
@@ -58,9 +62,10 @@ const claseContratadaGet = async (req = request, res = response) => {
         mensaje: claseData.mensaje,
         imgUrl: claseId.imgUrl,
         nombreAlumno: claseData.nombreAlumno,
+        commentId: claseData.commentId? claseData.commentId: null,
+        calificacion: claseData.commentId?.calificacion? claseData.commentId.calificacion : null,
+        comentarioInfo: claseData.commentId?.comentarioInfo? claseData.commentId.comentarioInfo : null
     }
-
-
 
     res.json({
         claseContratada
@@ -87,8 +92,6 @@ const getListaClaseContratada = async (req, res = response) => {
 
     const { name, lastName} = await User.findById(id);
 
-    //console.log('clasesData',clasesData);
-
     const claseContratadas = clasesData.map(clase => {
 
         return {
@@ -110,8 +113,6 @@ const getListaClaseContratada = async (req, res = response) => {
             mensaje: clase.mensaje,
           }});
 
-          //console.log('clasesData',clasesData);
-
     res.json({
         total,
         claseContratadas
@@ -125,7 +126,6 @@ const statusClaseContratadaUpdate = async (req, res = response) => {
     const { statusClaseContratada } = req.body;
 
     let response = await ClaseContratada.findByIdAndUpdate( id,  {statusAceptada: statusClaseContratada} );
-    console.log(response)
     // TODO manejo de error si no guarda el mongo
     return res.status(200).json({status: 200, ok: true, message: "STATUS NUEVO DE CLASE "});
 

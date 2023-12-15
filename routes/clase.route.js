@@ -16,7 +16,7 @@ const { claseGet,
     claseContratadaGet,
     comentarioUpdateParam,
     uploadImage,
-    comentarioCreatePostman,
+    comentarioCreate,
     listaComentariosGet } = require('../controllers/clase.controllers');
 
 const Multer = require("multer");
@@ -84,11 +84,13 @@ router.put('/actualizar-comment/:id', [
 ], comentarioUpdateParam);
 
 router.post('/create-comment', [
+    check('claseId', 'No es un ID válido').isMongoId(),
+    check('claseContratadaId', 'No es un ID válido').isMongoId(),
     check('comentarioInfo', 'El comentarioInfo es obligatorio').not().isEmpty(),
     check('calificacion', 'El calificacion es obligatorio').not().isEmpty(),
     check('autor', 'El autor es obligatorio').not().isEmpty(),
     validateFields
-], comentarioCreatePostman);
+], comentarioCreate);
 
 router.get('/lista-comentarios', listaComentariosGet);
 
