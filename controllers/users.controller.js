@@ -87,7 +87,6 @@ const updateUser = async function (req, res, next) {
         telefono: req.body.telefono ? req.body.telefono : null,
         bio: req.body.bio ? req.body.bio : null,
     }
-    console.log("Updating user... ", User);
 
     try {
         var updatedUser = await UserService.updateUser(User)
